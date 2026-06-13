@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Artist Influence · Vendor Portal (Mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<!-- Clash Display via Fontshare for mockup fidelity. PRODUCTION: self-host the woff2s per the design system (do not CDN). -->
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   ARTIST INFLUENCE — Design tokens (lifted from production CSS)
+   ============================================================ */
+:root{
+  --ai-red:0 84% 54%;
+  --ai-red-deep:355 80% 22%;
+  --ai-bg:225 18% 6%;
+  --ai-success:158 64% 44%;
+  --ai-amber:42 100% 67%;
+  --ai-blue:208 90% 60%;
+  --surface-1:225 14% 8%;
+  --surface-2:225 14% 11%;
+  --surface-3:225 14% 14%;
+  --hairline:225 12% 26%;
+  --text-primary:40 10% 96%;
+  --text-secondary:0 0% 97%;
+  --text-tertiary:0 0% 88%;
+  --radius:0.75rem;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+  --ease-reveal:cubic-bezier(0.22,1,0.36,1);
+  --font-display:'Helvetica Neue',Helvetica,Arial,'Inter',sans-serif; /* matches live site (Helvetica Neue trial); swap to 'Clash Display' first to restore brand face */
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --gradient-kinetic:radial-gradient(ellipse 120% 60% at 0% 20%, hsl(var(--ai-red-deep)/0.18) 0%, transparent 60%),
+                     radial-gradient(ellipse 120% 60% at 100% 80%, hsl(var(--ai-red-deep)/0.12) 0%, transparent 60%);
+  --shadow-card:0 1px 0 hsl(var(--text-primary)/0.04) inset, 0 12px 32px hsl(225 18% 2%/0.5);
+  --shadow-glow:0 0 28px hsl(var(--ai-red)/0.10);
+  --shadow-glow-hover:0 0 36px hsl(var(--ai-red)/0.18);
+  --shadow-button:inset 0 1px 0 hsl(var(--text-primary)/0.10), 0 6px 14px hsl(var(--ai-red)/0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--gradient-kinetic), hsl(var(--ai-bg));background-attachment:fixed;color:hsl(var(--text-primary));-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:"ss01","cv11","kern";line-height:1.5;min-height:100vh;}
+::selection{background:hsl(var(--ai-red)/0.35);color:hsl(var(--text-primary));}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-thumb{background:hsl(var(--hairline)/0.6);border-radius:8px;border:2px solid transparent;background-clip:padding-box;}
+::-webkit-scrollbar-thumb:hover{background:hsl(var(--hairline));background-clip:padding-box;}
+h1,h2{font-family:var(--font-display);font-weight:700;line-height:1.04;letter-spacing:-0.022em;text-wrap:balance;}
+h3,h4,h5,h6{font-family:var(--font-display);font-weight:600;line-height:1.2;letter-spacing:-0.012em;}
+.font-display{font-family:var(--font-display);}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+.mono{font-family:var(--font-mono);font-feature-settings:"tnum","ss01";letter-spacing:-0.01em;}
+.eyebrow{font-family:var(--font-body);font-size:0.75rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:hsl(var(--ai-red));}
+/* eyebrow stacked above a heading */
+.eyebrow-sm{font-family:var(--font-body);font-size:0.625rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:hsl(var(--ai-red));display:block;margin-bottom:5px;}
+.muted{color:hsl(var(--text-tertiary));}
+.sec{color:hsl(var(--text-secondary));}
+
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+.sidebar{position:sticky;top:0;height:100vh;background:hsl(var(--surface-1)/0.7);backdrop-filter:blur(14px) saturate(140%);border-right:1px solid hsl(var(--hairline)/0.5);display:flex;flex-direction:column;padding:22px 16px;gap:6px;}
+.brand{display:flex;align-items:center;gap:11px;padding:6px 8px 18px;}
+.brand-mark{width:34px;height:34px;border-radius:9px;background:hsl(var(--ai-red));display:grid;place-items:center;font-weight:800;font-size:16px;color:#fff;box-shadow:0 6px 14px hsl(var(--ai-red)/0.35);}
+.brand-name{font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;line-height:1.1;}
+.brand-sub{font-size:11px;color:hsl(var(--text-tertiary));letter-spacing:0.02em;}
+.nav-label{font-size:0.625rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:hsl(var(--text-tertiary));padding:14px 10px 6px;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;color:hsl(var(--text-secondary));font-size:13.5px;font-weight:500;transition:background .18s var(--ease),color .18s var(--ease);position:relative;}
+.nav-item:hover{background:hsl(var(--surface-3)/0.7);color:hsl(var(--text-primary));}
+.nav-item.active{background:hsl(var(--ai-red)/0.12);color:hsl(var(--text-primary));}
+.nav-item.active::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:hsl(var(--ai-red));}
+.nav-item svg{width:17px;height:17px;flex:none;opacity:.9;}
+.nav-badge{margin-left:auto;font-size:11px;font-weight:700;min-width:19px;height:19px;padding:0 6px;border-radius:99px;display:grid;place-items:center;background:hsl(var(--ai-red));color:#fff;}
+.nav-badge.amber{background:hsl(var(--ai-amber));color:#1a1500;}
+.sidebar-foot{margin-top:auto;padding-top:14px;border-top:1px solid hsl(var(--hairline)/0.4);}
+.vendor-chip{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;transition:background .18s;}
+.vendor-chip:hover{background:hsl(var(--surface-3)/0.7);}
+.avatar{width:32px;height:32px;border-radius:9px;background:linear-gradient(145deg,hsl(var(--ai-red)/0.9),hsl(355 80% 38%));display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;flex:none;}
+.vendor-chip .nm{font-size:12.5px;font-weight:600;line-height:1.2;}
+.vendor-chip .rl{font-size:11px;color:hsl(var(--text-tertiary));}
+
+.main{min-width:0;display:flex;flex-direction:column;}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:16px;padding:16px 32px;background:hsl(var(--ai-bg)/0.72);backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid hsl(var(--hairline)/0.4);}
+.page-title{font-family:var(--font-display);font-size:20px;font-weight:600;letter-spacing:-0.014em;}
+.page-sub{font-size:12.5px;color:hsl(var(--text-tertiary));margin-top:1px;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.payout-chip{display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:99px;background:hsl(var(--ai-success)/0.12);border:1px solid hsl(var(--ai-success)/0.3);font-size:12.5px;font-weight:600;color:hsl(var(--ai-success));}
+.payout-chip svg{width:14px;height:14px;}
+.icon-btn{position:relative;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:hsl(var(--surface-2)/0.8);border:1px solid hsl(var(--hairline)/0.5);transition:.18s;}
+.icon-btn:hover{border-color:hsl(var(--ai-red)/0.4);background:hsl(var(--surface-3));}
+.icon-btn svg{width:18px;height:18px;}
+.icon-btn .dot{position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:99px;background:hsl(var(--ai-red));border:2px solid hsl(var(--ai-bg));}
+.content{padding:28px 32px 64px;max-width:1300px;width:100%;}
+
+.card{background:hsl(var(--surface-1)/0.6);border:1px solid hsl(var(--hairline)/0.6);border-radius:var(--radius);box-shadow:var(--shadow-card);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease);}
+.card.interactive{cursor:pointer;}
+.card.interactive:hover{border-color:hsl(var(--ai-red)/0.35);box-shadow:inset 0 1px 0 hsl(var(--text-primary)/0.06),0 16px 40px hsl(225 18% 2%/0.55),var(--shadow-glow-hover);transform:translateY(-2px);}
+.hairline{height:1px;background:linear-gradient(90deg,transparent,hsl(var(--hairline)/0.5) 15%,hsl(var(--hairline)/0.5) 85%,transparent);}
+
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 15px;border-radius:var(--radius);font-size:13px;font-weight:600;transition:all .3s var(--ease);white-space:nowrap;}
+.btn svg{width:15px;height:15px;}
+.btn:active{transform:translateY(1px) scale(.97);transition-duration:.1s;}
+.btn-primary{background:hsl(var(--ai-red));color:#fff;border:1px solid hsl(var(--text-primary)/0.10);box-shadow:var(--shadow-button);}
+.btn-primary:hover{background:hsl(var(--ai-red)/0.95);transform:translateY(-2px);box-shadow:var(--shadow-button),var(--shadow-glow-hover);}
+.btn-primary::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,hsl(0 0% 100%/0.28) 50%,transparent 65%);transform:translateX(-120%);pointer-events:none;}
+.btn-primary:hover::after{transform:translateX(120%);transition:transform .55s var(--ease);}
+.btn-ghost{background:hsl(var(--surface-2)/0.8);color:hsl(var(--text-primary));border:1px solid hsl(var(--hairline)/0.6);backdrop-filter:blur(6px);}
+.btn-ghost:hover{border-color:hsl(var(--ai-red)/0.5);color:hsl(var(--ai-red));}
+.btn-sm{padding:6px 11px;font-size:12px;}
+.btn-block{width:100%;}
+
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;white-space:nowrap;}
+.pill .pdot{width:6px;height:6px;border-radius:99px;background:currentColor;}
+.pill.green{background:hsl(var(--ai-success)/0.13);color:hsl(var(--ai-success));}
+.pill.amber{background:hsl(var(--ai-amber)/0.14);color:hsl(var(--ai-amber));}
+.pill.red{background:hsl(var(--ai-red)/0.14);color:hsl(0 84% 66%);}
+.pill.blue{background:hsl(var(--ai-blue)/0.14);color:hsl(var(--ai-blue));}
+.pill.gray{background:hsl(var(--surface-3));color:hsl(var(--text-tertiary));}
+.tier{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:6px;font-size:10.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.tier.t1{background:linear-gradient(145deg,hsl(42 100% 67%/0.16),hsl(42 100% 67%/0.06));color:hsl(var(--ai-amber));border:1px solid hsl(var(--ai-amber)/0.3);}
+.tier.std{background:hsl(var(--surface-3));color:hsl(var(--text-tertiary));border:1px solid hsl(var(--hairline)/0.5);}
+
+.bar{height:7px;border-radius:99px;background:hsl(var(--surface-3));overflow:hidden;position:relative;}
+.bar>span{position:absolute;left:0;top:0;bottom:0;border-radius:99px;}
+.bar .fill-green{background:linear-gradient(90deg,hsl(var(--ai-success)/0.7),hsl(var(--ai-success)));}
+.bar .fill-amber{background:linear-gradient(90deg,hsl(var(--ai-amber)/0.7),hsl(var(--ai-amber)));}
+.bar .fill-red{background:linear-gradient(90deg,hsl(var(--ai-red)/0.7),hsl(var(--ai-red)));}
+.bar .fill-blue{background:linear-gradient(90deg,hsl(var(--ai-blue)/0.7),hsl(var(--ai-blue)));}
+.bar .pace-marker{position:absolute;top:-3px;bottom:-3px;width:2px;background:hsl(var(--text-primary)/0.55);}
+
+.grid{display:grid;gap:18px;}
+.g-2{grid-template-columns:repeat(2,1fr);}
+.g-3{grid-template-columns:repeat(3,1fr);}
+.g-4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:1100px){.g-4{grid-template-columns:repeat(2,1fr);}.g-3{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:760px){.g-2,.g-3,.g-4{grid-template-columns:1fr;}}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl thead th{text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:hsl(var(--text-tertiary));padding:11px 16px;border-bottom:1px solid hsl(var(--hairline)/0.5);}
+.tbl tbody td{padding:13px 16px;border-bottom:1px solid hsl(var(--hairline)/0.28);vertical-align:middle;}
+.tbl tbody tr:last-child td{border-bottom:none;}
+.tbl tbody tr.clickable{cursor:pointer;transition:background .15s;}
+.tbl tbody tr.clickable:hover{background:hsl(var(--surface-2)/0.6);}
+
+.stat-label{font-family:var(--font-body);font-size:0.6875rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:hsl(var(--ai-red));}
+.stat-val{font-family:var(--font-mono);font-feature-settings:"tnum","ss01";font-size:27px;font-weight:600;letter-spacing:-0.02em;margin-top:5px;}
+.sec-head{display:flex;align-items:flex-end;gap:12px;margin:32px 0 16px;}
+.sec-head h2{font-size:16px;font-weight:600;letter-spacing:-0.012em;}
+.sec-head h2[data-eyebrow]::before{content:attr(data-eyebrow);display:block;font-family:var(--font-body);font-size:0.625rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:hsl(var(--ai-red));margin-bottom:6px;}
+.sec-head .count{font-size:12px;color:hsl(var(--text-tertiary));font-weight:500;}
+.sec-head .line{flex:1;height:1px;background:hsl(var(--hairline)/0.35);}
+
+.song-ttl{font-family:var(--font-display);font-weight:600;font-size:15.5px;letter-spacing:-0.012em;}
+.song-art{font-size:12.5px;color:hsl(var(--text-tertiary));margin-top:1px;}
+.cover{width:46px;height:46px;border-radius:9px;flex:none;display:grid;place-items:center;font-weight:700;color:#fff;font-size:15px;}
+.song-link{display:inline-flex;align-items:center;gap:5px;transition:color .15s;}
+.song-link:hover{color:hsl(141 76% 58%);}
+.song-link svg{width:14px;height:14px;opacity:.65;}
+.song-link:hover svg{opacity:1;color:hsl(141 76% 48%);}
+.fol-link{cursor:pointer;border-bottom:1px dashed hsl(var(--hairline));padding-bottom:1px;transition:color .15s,border-color .15s;}
+.fol-link:hover{color:hsl(var(--ai-success));border-color:hsl(var(--ai-success)/0.5);}
+
+.empty{text-align:center;padding:54px 30px;}
+.empty .ec{width:54px;height:54px;border-radius:14px;background:hsl(var(--surface-3));display:grid;place-items:center;margin:0 auto 16px;}
+.empty .ec svg{width:24px;height:24px;color:hsl(var(--text-tertiary));}
+.empty h3{font-size:16px;margin-bottom:6px;}
+.empty p{font-size:13px;color:hsl(var(--text-tertiary));max-width:380px;margin:0 auto;}
+
+.action-card{padding:18px 20px;border-radius:var(--radius);display:flex;gap:16px;align-items:flex-start;background:hsl(var(--surface-1)/0.7);border:1px solid hsl(var(--hairline)/0.5);box-shadow:var(--shadow-card);transition:.22s var(--ease);}
+.action-card:hover{transform:translateY(-2px);}
+.action-card.crit{border-color:hsl(var(--ai-red)/0.4);background:linear-gradient(145deg,hsl(var(--ai-red)/0.07),hsl(var(--surface-1)/0.7));}
+.action-card.warn{border-color:hsl(var(--ai-amber)/0.32);}
+.action-card.go{border-color:hsl(var(--ai-success)/0.3);}
+.ac-ic{width:42px;height:42px;border-radius:11px;flex:none;display:grid;place-items:center;}
+.ac-ic svg{width:20px;height:20px;}
+.ac-ic.red{background:hsl(var(--ai-red)/0.14);color:hsl(0 84% 66%);}
+.ac-ic.amber{background:hsl(var(--ai-amber)/0.14);color:hsl(var(--ai-amber));}
+.ac-ic.green{background:hsl(var(--ai-success)/0.14);color:hsl(var(--ai-success));}
+.ac-ic.blue{background:hsl(var(--ai-blue)/0.14);color:hsl(var(--ai-blue));}
+.ac-ic.gray{background:hsl(var(--surface-3));color:hsl(var(--text-tertiary));}
+.ac-body{flex:1;min-width:0;}
+.ac-kicker{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:5px;}
+.ac-kicker.red{color:hsl(0 84% 66%);}
+.ac-kicker.amber{color:hsl(var(--ai-amber));}
+.ac-kicker.green{color:hsl(var(--ai-success));}
+.ac-kicker.blue{color:hsl(var(--ai-blue));}
+.ac-title{font-family:var(--font-display);font-weight:600;font-size:15.5px;letter-spacing:-0.012em;margin-bottom:4px;}
+.ac-text{font-size:13px;color:hsl(var(--text-secondary));line-height:1.55;}
+.ac-text b{color:hsl(var(--text-primary));font-weight:600;}
+.ac-actions{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap;}
+
+.kv{display:flex;flex-direction:column;gap:3px;}
+.kv .k{font-size:11px;color:hsl(var(--text-tertiary));font-weight:500;}
+.kv .v{font-size:14px;font-weight:600;}
+
+.overlay{position:fixed;inset:0;background:hsl(225 18% 4%/0.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;}
+.overlay.open{display:flex;}
+.modal{width:100%;max-width:560px;background:hsl(var(--surface-1)/0.92);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border:1px solid hsl(var(--hairline)/0.7);border-radius:16px;box-shadow:inset 0 1px 0 hsl(var(--text-primary)/0.05),0 30px 80px hsl(225 18% 1%/0.7);animation:modalIn .46s var(--ease-reveal);}
+.modal.wide{max-width:720px;}
+.modal.xwide{max-width:860px;}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98);}to{opacity:1;transform:none;}}
+.modal-head{display:flex;align-items:flex-start;gap:14px;padding:22px 24px;border-bottom:1px solid hsl(var(--hairline)/0.4);}
+.modal-head h3{font-size:17px;}
+.modal-body{padding:22px 24px;}
+.modal-foot{padding:18px 24px;border-top:1px solid hsl(var(--hairline)/0.4);display:flex;gap:10px;justify-content:flex-end;background:hsl(var(--surface-2)/0.4);border-radius:0 0 16px 16px;}
+.close-x{margin-left:auto;width:32px;height:32px;border-radius:8px;display:grid;place-items:center;background:hsl(var(--surface-3));flex:none;}
+.close-x:hover{background:hsl(var(--ai-red)/0.18);}
+.close-x svg{width:16px;height:16px;}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:7px;}
+.field label .opt{color:hsl(var(--text-tertiary));font-weight:400;font-size:11.5px;}
+.field .hint{font-size:11.5px;color:hsl(var(--text-tertiary));margin-top:6px;}
+.input,.select,textarea.input{width:100%;padding:10px 13px;border-radius:9px;background:hsl(var(--surface-2));border:1px solid hsl(var(--hairline)/0.6);color:hsl(var(--text-primary));font-size:13.5px;font-family:inherit;transition:.15s;}
+.input:focus,.select:focus,textarea.input:focus{outline:none;border-color:hsl(var(--ai-red)/0.6);box-shadow:0 0 0 3px hsl(var(--ai-red)/0.12);}
+.input::placeholder,textarea.input::placeholder{color:hsl(var(--text-tertiary));}
+.inline-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.check{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;background:hsl(var(--surface-2)/0.6);border:1px solid hsl(var(--hairline)/0.5);font-size:13px;cursor:pointer;}
+.check input{margin-top:2px;accent-color:hsl(var(--ai-red));width:16px;height:16px;}
+.mini-detail{background:hsl(var(--surface-2)/0.5);border:1px solid hsl(var(--hairline)/0.4);border-radius:11px;padding:15px 17px;margin-bottom:20px;}
+
+.tg{position:relative;width:38px;height:22px;border-radius:99px;background:hsl(var(--surface-3));border:1px solid hsl(var(--hairline)/0.6);transition:.2s;flex:none;cursor:pointer;}
+.tg::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:99px;background:hsl(var(--text-tertiary));transition:.2s var(--ease);}
+.tg.on{background:hsl(var(--ai-red)/0.85);border-color:hsl(var(--ai-red));}
+.tg.on::after{left:18px;background:#fff;}
+
+.notif-pop{position:absolute;top:48px;right:0;width:360px;background:hsl(var(--surface-1));border:1px solid hsl(var(--hairline)/0.7);border-radius:14px;box-shadow:0 24px 60px hsl(225 18% 1%/0.6);z-index:40;display:none;overflow:hidden;}
+.notif-pop.open{display:block;animation:pop .18s var(--ease);}
+.notif-row{display:flex;gap:11px;padding:13px 16px;border-bottom:1px solid hsl(var(--hairline)/0.3);transition:background .15s;cursor:pointer;}
+.notif-row:hover{background:hsl(var(--surface-2)/0.6);}
+.notif-row .nd{width:8px;height:8px;border-radius:99px;margin-top:5px;flex:none;}
+
+.matrix-row{display:grid;grid-template-columns:1.6fr repeat(4,72px) 110px;align-items:center;gap:8px;padding:13px 4px;border-bottom:1px solid hsl(var(--hairline)/0.28);}
+.matrix-row.head{padding-top:4px;padding-bottom:10px;}
+.matrix-row.head span{font-size:10.5px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:hsl(var(--text-tertiary));text-align:center;}
+.matrix-row.head span:first-child{text-align:left;}
+.cat-name{font-size:13px;font-weight:600;}
+.cat-desc{font-size:11.5px;color:hsl(var(--text-tertiary));margin-top:2px;}
+.matrix-cell{display:grid;place-items:center;}
+.freq-sel{font-size:11.5px;padding:5px 8px;border-radius:7px;background:hsl(var(--surface-2));border:1px solid hsl(var(--hairline)/0.6);color:hsl(var(--text-secondary));}
+
+.chan-card{display:flex;align-items:center;gap:13px;padding:14px 16px;border-radius:11px;background:hsl(var(--surface-2)/0.5);border:1px solid hsl(var(--hairline)/0.5);}
+.chan-ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:hsl(var(--surface-3));flex:none;}
+.chan-ic svg{width:18px;height:18px;}
+
+.banner{display:flex;align-items:center;gap:13px;padding:14px 18px;border-radius:12px;font-size:13px;}
+.banner.amber{background:hsl(var(--ai-amber)/0.1);border:1px solid hsl(var(--ai-amber)/0.3);}
+.banner.green{background:hsl(var(--ai-success)/0.1);border:1px solid hsl(var(--ai-success)/0.3);}
+.banner.blue{background:hsl(var(--ai-blue)/0.1);border:1px solid hsl(var(--ai-blue)/0.3);}
+.banner svg{width:20px;height:20px;flex:none;}
+
+.tabs{display:flex;gap:4px;padding:4px;background:hsl(var(--surface-2)/0.6);border-radius:11px;border:1px solid hsl(var(--hairline)/0.4);width:fit-content;}
+.tab{padding:8px 15px;border-radius:8px;font-size:12.5px;font-weight:600;color:hsl(var(--text-tertiary));transition:.15s;cursor:pointer;}
+.tab.active{background:hsl(var(--surface-3));color:hsl(var(--text-primary));box-shadow:var(--shadow-card);}
+.tab:hover:not(.active){color:hsl(var(--text-secondary));}
+
+/* segmented view toggle (cards | table) */
+.seg{display:flex;gap:2px;padding:3px;background:hsl(var(--surface-2)/0.7);border-radius:9px;border:1px solid hsl(var(--hairline)/0.5);}
+.seg-btn{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;color:hsl(var(--text-tertiary));transition:.15s;}
+.seg-btn svg{width:14px;height:14px;}
+.seg-btn.active{background:hsl(var(--surface-3));color:hsl(var(--text-primary));box-shadow:var(--shadow-card);}
+
+/* filter popover */
+.filter-pop{margin-top:14px;padding:18px 20px;border-radius:12px;background:hsl(var(--surface-1)/0.8);border:1px solid hsl(var(--hairline)/0.5);box-shadow:var(--shadow-card);}
+.filter-grp{margin-bottom:14px;}
+.filter-grp .fl{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:hsl(var(--text-tertiary));margin-bottom:9px;}
+.chips{display:flex;gap:8px;flex-wrap:wrap;}
+.fchip{padding:6px 13px;border-radius:99px;font-size:12px;font-weight:600;background:hsl(var(--surface-2));border:1px solid hsl(var(--hairline)/0.6);color:hsl(var(--text-secondary));transition:.15s;cursor:pointer;}
+.fchip.on{background:hsl(var(--ai-red)/0.15);border-color:hsl(var(--ai-red)/0.5);color:hsl(0 84% 70%);}
+
+/* channel master chips */
+.mchan{display:flex;align-items:center;gap:9px;padding:10px 16px;border-radius:11px;background:hsl(var(--surface-2)/0.6);border:1px solid hsl(var(--hairline)/0.6);font-size:13px;font-weight:600;color:hsl(var(--text-secondary));transition:.15s;cursor:pointer;}
+.mchan svg{width:17px;height:17px;}
+.mchan.on{background:hsl(var(--ai-red)/0.14);border-color:hsl(var(--ai-red)/0.55);color:hsl(0 84% 72%);}
+.mchan .mcheck{width:18px;height:18px;border-radius:6px;border:1.5px solid hsl(var(--hairline));display:grid;place-items:center;}
+.mchan.on .mcheck{background:hsl(var(--ai-red));border-color:hsl(var(--ai-red));}
+.mchan .mcheck svg{width:12px;height:12px;color:#fff;opacity:0;}
+.mchan.on .mcheck svg{opacity:1;}
+
+/* payout method picker */
+.pm-card{padding:15px 17px;border-radius:12px;background:hsl(var(--surface-2)/0.5);border:1px solid hsl(var(--hairline)/0.5);margin-bottom:12px;transition:.15s;}
+.pm-card.on{border-color:hsl(var(--ai-red)/0.45);background:hsl(var(--ai-red)/0.05);}
+.pm-head{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.pm-ic{width:36px;height:36px;border-radius:9px;background:hsl(var(--surface-3));display:grid;place-items:center;flex:none;}
+.pm-ic svg{width:17px;height:17px;}
+.pm-detail{margin-top:14px;padding-top:14px;border-top:1px solid hsl(var(--hairline)/0.35);display:none;}
+.pm-card.on .pm-detail{display:block;}
+
+/* chart */
+.chart-wrap{background:hsl(var(--surface-2)/0.4);border:1px solid hsl(var(--hairline)/0.4);border-radius:12px;padding:16px;}
+.chart-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;}
+.lg{display:flex;align-items:center;gap:7px;color:hsl(var(--text-secondary));}
+.lg .ls{width:18px;height:0;border-top:2px solid currentColor;}
+.lg .ls.dash{border-top-style:dashed;}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:hsl(var(--surface-3));border:1px solid hsl(var(--ai-success)/0.4);padding:13px 20px;border-radius:12px;display:flex;align-items:center;gap:11px;font-size:13.5px;font-weight:500;box-shadow:0 18px 40px hsl(225 18% 1%/0.6);opacity:0;pointer-events:none;transition:.3s var(--ease);z-index:200;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast svg{width:18px;height:18px;color:hsl(var(--ai-success));}
+.mock-flag{position:fixed;bottom:14px;left:14px;z-index:50;font-size:10.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:hsl(var(--text-tertiary));background:hsl(var(--surface-2)/0.85);border:1px solid hsl(var(--hairline)/0.5);padding:6px 11px;border-radius:99px;backdrop-filter:blur(8px);}
+
+/* payments drill-in affordance */
+.pay-cta{font-size:11.5px;font-weight:600;color:hsl(var(--text-tertiary));margin-top:13px;display:flex;align-items:center;gap:5px;transition:color .18s var(--ease),gap .18s var(--ease);}
+.card.interactive:hover .pay-cta{color:hsl(var(--ai-red));gap:8px;}
+
+/* ===================== MOTION ===================== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:.5;}to{transform:none;opacity:1;}}
+@keyframes modalIn{from{opacity:0;transform:scale(.96);filter:blur(14px);}to{opacity:1;transform:none;filter:blur(0);}}
+.cursor-dot{position:fixed;top:0;left:0;width:6px;height:6px;border-radius:99px;background:hsl(var(--ai-red));box-shadow:0 0 10px hsl(var(--ai-red)/0.8);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0;transition:opacity .25s var(--ease);}
+@media (pointer:coarse),(prefers-reduced-motion:reduce){.cursor-dot{display:none !important;}}
+@media (prefers-reduced-motion:no-preference){
+  .content.enter>*{animation:fadeUp .55s var(--ease-reveal) both;}
+  .content.enter>*:nth-child(2){animation-delay:.05s;}
+  .content.enter>*:nth-child(3){animation-delay:.10s;}
+  .content.enter>*:nth-child(4){animation-delay:.15s;}
+  .content.enter>*:nth-child(5){animation-delay:.20s;}
+  .content.enter>*:nth-child(n+6){animation-delay:.24s;}
+}
+
+/* ===================== MOBILE ===================== */
+.hamburger{display:none;width:38px;height:38px;border-radius:10px;place-items:center;background:hsl(var(--surface-2)/0.8);border:1px solid hsl(var(--hairline)/0.5);flex:none;}
+.hamburger svg{width:19px;height:19px;}
+.drawer-backdrop{display:none;position:fixed;inset:0;background:hsl(225 18% 2%/0.6);backdrop-filter:blur(4px);z-index:60;}
+.drawer-backdrop.open{display:block;animation:fadeUp .2s var(--ease);}
+.tabbar{display:none;}
+@media(max-width:860px){
+  .app{grid-template-columns:1fr;}
+  .sidebar{position:fixed;top:0;left:0;height:100dvh;z-index:70;width:268px;transform:translateX(-100%);transition:transform .3s var(--ease);}
+  .sidebar.open{transform:none;box-shadow:0 0 70px hsl(225 18% 1%/0.7);}
+  .hamburger{display:grid;}
+  .content{padding:20px 16px 92px;}
+  .topbar{padding:13px 16px;gap:12px;}
+  .page-title{font-size:17px;}
+  .pc-text{display:none;}
+  .payout-chip{padding:9px;}
+  .tabbar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:65;background:hsl(var(--ai-bg)/0.92);backdrop-filter:blur(18px) saturate(140%);border-top:1px solid hsl(var(--hairline)/0.5);padding:7px 6px calc(7px + env(safe-area-inset-bottom));justify-content:space-around;}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 8px;border-radius:11px;color:hsl(var(--text-tertiary));font-size:9.5px;font-weight:600;flex:1;transition:color .15s;}
+  .tabbar a svg{width:20px;height:20px;}
+  .tabbar a.active{color:hsl(var(--ai-red));}
+  .notif-pop{width:min(360px,calc(100vw - 28px));right:-8px;}
+}
+@media(max-width:760px){
+  .seg{display:none;}
+  /* tables collapse into stacked glass cards, never a horizontal scroll */
+  .card:has(.tbl){background:none;border:none;box-shadow:none;backdrop-filter:none;padding:0;overflow:visible;}
+  .tbl thead{display:none;}
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%;}
+  .tbl tr{background:hsl(var(--surface-1)/0.6);border:1px solid hsl(var(--hairline)/0.6);border-radius:var(--radius);padding:6px 16px;margin-bottom:10px;backdrop-filter:blur(14px) saturate(140%);box-shadow:var(--shadow-card);}
+  .tbl tr:hover{background:hsl(var(--surface-1)/0.6);}
+  .tbl td{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid hsl(var(--hairline)/0.25);text-align:right;}
+  .tbl tr td:last-child{border-bottom:none;}
+  .tbl td[data-label]::before{content:attr(data-label);font-family:var(--font-body);font-size:0.625rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:hsl(var(--text-tertiary));text-align:left;flex:none;}
+  .tbl td:empty{display:none;}
+  .card:has(.matrix-row){overflow-x:auto;}
+  .matrix-row{min-width:560px;}
+  .overlay{padding:0;align-items:flex-end;}
+  .modal,.modal.wide,.modal.xwide{max-width:100%;max-height:92dvh;overflow-y:auto;border-radius:20px 20px 0 0;animation:sheetUp .3s var(--ease);}
+  .modal-foot{position:sticky;bottom:0;}
+  .inline-2{grid-template-columns:1fr;}
+}
+
+/* === Drifting ambient glow (the breathing background, like the site's AmbientGlow) === */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.ambient i{position:absolute;display:block;border-radius:50%;filter:blur(90px);will-change:transform;}
+.ambient .g1{width:60vw;height:60vw;left:-12vw;top:-18vw;background:radial-gradient(circle,hsl(var(--ai-red-deep)/0.55),transparent 70%);animation:driftA 26s var(--ease) infinite alternate;}
+.ambient .g2{width:52vw;height:52vw;right:-14vw;top:8vh;background:radial-gradient(circle,hsl(var(--ai-red)/0.14),transparent 70%);animation:driftB 34s var(--ease) infinite alternate;}
+.ambient .g3{width:66vw;height:66vw;left:18vw;bottom:-30vw;background:radial-gradient(circle,hsl(var(--ai-red-deep)/0.42),transparent 70%);animation:driftC 42s var(--ease) infinite alternate;}
+@keyframes driftA{from{transform:translate(0,0) scale(1)}to{transform:translate(8vw,6vh) scale(1.16)}}
+@keyframes driftB{from{transform:translate(0,0) scale(1)}to{transform:translate(-7vw,5vh) scale(1.1)}}
+@keyframes driftC{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,-6vh) scale(1.2)}}
+.app{position:relative;z-index:1;}
+@media (prefers-reduced-motion:reduce){.ambient i{animation:none!important;}}
+
+/* === Scroll reveal: each block rises in once === */
+.reveal{opacity:0;transform:translateY(22px);}
+.reveal.revealed{opacity:1;transform:none;transition:opacity .7s var(--ease-reveal),transform .7s var(--ease-reveal);transition-delay:var(--rd,0ms);}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;}}
+
+/* === Card 3D tilt: faster transition while the pointer drives it === */
+.card,.action-card{transform-style:preserve-3d;}
+.card.tilting,.action-card.tilting{transition:transform .12s ease-out,border-color .3s var(--ease),box-shadow .3s var(--ease)!important;}
+.card:hover,.action-card:hover{box-shadow:inset 0 1px 0 hsl(var(--text-primary)/0.06),0 16px 40px hsl(225 18% 2%/0.55),var(--shadow-glow-hover);}
+.card:hover{border-color:hsl(var(--ai-red)/0.35);}
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">AI</div>
+      <div><div class="brand-name">Artist Influence</div><div class="brand-sub">Vendor Portal</div></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="sidebar-foot">
+      <div class="vendor-chip"><div class="avatar">RW</div><div><div class="nm">Rhythm Wave Media</div><div class="rl">Approved · Tier 1</div></div></div>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button class="hamburger" onclick="toggleDrawer()" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <div><div class="eyebrow-sm" id="pageEyebrow">today</div><div class="page-title" id="pageTitle">Home</div><div class="page-sub" id="pageSub">Today's actions</div></div>
+      <div class="topbar-right">
+        <div class="payout-chip" title="Vendors are paid every Friday">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          <span class="pc-text">$420 · Friday Jun 19</span>
+        </div>
+        <button class="icon-btn" id="bellBtn" onclick="toggleNotif(event)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="dot"></span>
+          <div class="notif-pop" id="notifPop" onclick="event.stopPropagation()"></div>
+        </button>
+      </div>
+    </header>
+    <div class="content" id="view"></div>
+  </div>
+</div>
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<div class="overlay" id="overlay" onclick="closeModal(event)"><div id="modalMount"></div></div>
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMsg"></span></div>
+<div class="mock-flag">Mockup · sample data</div>
+
+<script>
+/* ===================== ICONS ===================== */
+const I = {
+  home:'<path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
+  inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+  send:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+  zap:'<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
+  music:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  wallet:'<path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/><circle cx="16" cy="12" r="1"/>',
+  settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  msg:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  alert:'<path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>',
+  trend:'<path d="M22 7 13.5 15.5l-5-5L2 17"/><path d="M16 7h6v6"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>',
+  phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  whatsapp:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>',
+  app:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/>',
+  spark:'<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/>',
+  filter:'<path d="M22 3H2l8 9.5V19l4 2v-8.5z"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  flame:'<path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 .5-2S6 11 6 14a6 6 0 0 0 12 0c0-5-6-12-6-12z"/>',
+  play:'<circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z" fill="currentColor" stroke="none"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  chart:'<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>',
+  moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  bank:'<path d="m3 21 18 0M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v4M12 14v4M16 14v4"/>',
+  dollar:'<path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  edit:'<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z"/>',
+};
+function svg(name,sw){return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw||2}" stroke-linecap="round" stroke-linejoin="round">${I[name]||''}</svg>`;}
+
+/* ===================== MOCK DATA ===================== */
+const NAV = [
+  {id:'home',label:'Home',icon:'home'},
+  {id:'available',label:'Available Campaigns',icon:'inbox',badge:'6'},
+  {id:'offers',label:'My Offers',icon:'send',badge:'2',badgeClass:'amber'},
+  {id:'active',label:'My Active Campaigns',icon:'zap',badge:'6'},
+  {id:'playlists',label:'My Playlists',icon:'music'},
+  {id:'payments',label:'Payments',icon:'wallet'},
+  {id:'settings',label:'Settings',icon:'settings'},
+];
+const COVERS = {a:'linear-gradient(145deg,#7c3aed,#3b82f6)',b:'linear-gradient(145deg,#ec4899,#f59e0b)',c:'linear-gradient(145deg,#10b981,#06b6d4)',d:'linear-gradient(145deg,#ef4444,#f97316)',e:'linear-gradient(145deg,#6366f1,#8b5cf6)',f:'linear-gradient(145deg,#14b8a6,#22c55e)',g:'linear-gradient(145deg,#f43f5e,#a855f7)',h:'linear-gradient(145deg,#0ea5e9,#6366f1)'};
+
+const available = [
+  {id:'AV-318',artist:'Nova Sky',song:'Midnight Drive',genre:'Tech House',sub:'Melodic',tier:'t1',need:100000,window:90,terr:'US, UK, DE',cover:'a',min:20000,deadline:'Jun 16',release:'Jun 6, 2026',note:'Label priority release. Prioritize editorial-style playlists with a strong US listener base.'},
+  {id:'AV-319',artist:'Echo Lane',song:'Paper Hearts',genre:'Indie Pop',sub:'Bedroom Pop',tier:'std',need:45000,window:60,terr:'US, CA',cover:'b',min:10000,deadline:'Jun 18',release:'May 30, 2026',note:''},
+  {id:'AV-320',artist:'Cassian',song:'Gravity',genre:'Deep House',sub:'Organic House',tier:'std',need:75000,window:75,terr:'EU, US',cover:'c',min:15000,deadline:'Jun 20',release:'Jun 2, 2026',note:'Open to territory-flexible coverage.'},
+  {id:'AV-321',artist:'Maru',song:'Silk',genre:'R&B',sub:'Alt R&B',tier:'t1',need:120000,window:120,terr:'US, UK, AU',cover:'g',min:25000,deadline:'Jun 22',release:'Jun 9, 2026',note:''},
+];
+const directDeals = [
+  {id:'DA-01',artist:'Lumen',song:'Parallel',genre:'Tech House',sub:'Peak Time',tier:'t1',cover:'h',propStreams:40000,propRate:10,window:90,terr:'US, UK',release:'May 23, 2026',note:'We are allocating this directly to you based on your Tech House placement history. Confirm or adjust the allocation below.'},
+  {id:'DA-02',artist:'Sable',song:'Quiet Storm',genre:'R&B',sub:'Alt R&B',tier:'std',cover:'g',propStreams:25000,propRate:11,window:75,terr:'US',release:'Jun 4, 2026',note:'Direct allocation. Adjust the amount if your capacity has changed.'},
+];
+
+const offers = [
+  {id:'OF-211',artist:'Solene',song:'Afterglow',genre:'Melodic Techno',offered:50000,rate:10,status:'partial',accepted:30000,payout:300,release:'May 16, 2026',note:'Accepted at 30k to balance the vendor mix. Strong fit.',date:'Jun 9'},
+  {id:'OF-212',artist:'Drift King',song:'Neon Rain',genre:'Tech House',offered:40000,rate:9,status:'submitted',accepted:null,payout:null,release:'Jun 6, 2026',note:'',date:'Jun 11'},
+  {id:'OF-213',artist:'Aria Vale',song:'Glass House',genre:'Indie Pop',offered:25000,rate:11,status:'accepted',accepted:25000,payout:275,release:'May 23, 2026',note:'',date:'Jun 8'},
+  {id:'OF-214',artist:'Lowtide',song:'Undertow',genre:'Deep House',offered:60000,rate:8.5,status:'submitted',accepted:null,payout:null,release:'Jun 6, 2026',note:'',date:'Jun 11'},
+  {id:'OF-209',artist:'Kestrel',song:'Hollow',genre:'Alt Pop',offered:30000,rate:12,status:'notselected',accepted:null,payout:null,release:'May 9, 2026',note:'',date:'Jun 5'},
+  {id:'OF-205',artist:'Juno Park',song:'Daydream',genre:'Bedroom Pop',offered:20000,rate:10,status:'filled',accepted:null,payout:null,release:'Apr 25, 2026',note:'',date:'Jun 2'},
+];
+
+/* attached playlists carry per-playlist daily contribution for the metrics tables */
+const active = [
+  {id:'AC-140',artist:'Solene',song:'Afterglow',genre:'Melodic Techno',tier:'t1',cover:'e',release:'May 16, 2026',accepted:30000,delivered:18400,start:'May 20',end:'Jul 19',daysTotal:60,daysLeft:37,rate:10,reqDaily:313,curDaily:402,status:'onpace',pay:'pending',
+    pls:[{name:'Late Night Tech House',daily:190},{name:'Fresh Melodic Techno',daily:120},{name:'Sunset Sessions',daily:92}]},
+  {id:'AC-141',artist:'Aria Vale',song:'Glass House',genre:'Indie Pop',tier:'std',cover:'b',release:'May 23, 2026',accepted:25000,delivered:9800,start:'May 28',end:'Jul 27',daysTotal:60,daysLeft:45,rate:11,reqDaily:338,curDaily:280,status:'slightly',pay:'pending',
+    pls:[{name:'Indie Discoveries',daily:175},{name:'Sunset Sessions',daily:105}]},
+  {id:'AC-138',artist:'Halcyon',song:'Open Water',genre:'Deep House',tier:'std',cover:'c',release:'Apr 25, 2026',accepted:60000,delivered:21000,start:'May 5',end:'Jul 4',daysTotal:60,daysLeft:22,rate:8.5,reqDaily:1773,curDaily:690,status:'behind',pay:'pending',
+    pls:[{name:'Deep & Organic',daily:240},{name:'Sunset Sessions',daily:180},{name:'Late Night Tech House',daily:160},{name:'Fresh Melodic Techno',daily:110}]},
+  {id:'AC-142',artist:'Vesper',song:'Cobalt',genre:'Tech House',tier:'t1',cover:'a',release:'Jun 6, 2026',accepted:50000,delivered:0,start:'Jun 8',end:'Sep 6',daysTotal:90,daysLeft:86,rate:10,reqDaily:582,curDaily:0,status:'critical',pay:'pending',pls:[]},
+  {id:'AC-143',artist:'Tidal Bloom',song:'Saltwater',genre:'Deep House',tier:'std',cover:'h',release:'May 30, 2026',accepted:35000,delivered:0,start:'Jun 1',end:'Aug 30',daysTotal:90,daysLeft:79,rate:9,reqDaily:443,curDaily:0,status:'sfa',pay:'pending',
+    pls:[{name:'Deep & Organic',daily:0},{name:'Late Night Tech House',daily:0}]},
+  {id:'AC-135',artist:'Marigold',song:'Sunroom',genre:'Indie Pop',tier:'std',cover:'f',release:'Apr 4, 2026',accepted:40000,delivered:40000,start:'Apr 10',end:'Jun 9',daysTotal:60,daysLeft:0,rate:10,reqDaily:0,curDaily:0,status:'completed',pay:'paid',
+    pls:[{name:'Indie Discoveries',daily:210},{name:'Sunset Sessions',daily:240},{name:'Deep & Organic',daily:160}]},
+];
+
+const playlists = [
+  {id:'PL-01',name:'Late Night Tech House',owner:'Rhythm Wave',followers:84200,avg:1240,total:412000,fol:{d1:184,d7:1240,d28:5100},genre:'Tech House',sub:'Melodic, Deep',terr:'US, UK',campaigns:['Afterglow','Open Water'],sfa:'good'},
+  {id:'PL-02',name:'Indie Discoveries',owner:'Rhythm Wave',followers:52800,avg:760,total:248000,fol:{d1:96,d7:610,d28:2300},genre:'Indie Pop',sub:'Bedroom Pop',terr:'US, CA',campaigns:['Glass House'],sfa:'good'},
+  {id:'PL-03',name:'Deep & Organic',owner:'Rhythm Wave',followers:41100,avg:540,total:176000,fol:{d1:62,d7:415,d28:1620},genre:'Deep House',sub:'Organic House',terr:'EU, US',campaigns:['Open Water'],sfa:'good'},
+  {id:'PL-04',name:'Fresh Melodic Techno',owner:'Rhythm Wave',followers:29600,avg:0,total:0,fol:{d1:44,d7:280,d28:1180},genre:'Melodic Techno',sub:'Pending',terr:'Global',campaigns:[],sfa:'pending'},
+  {id:'PL-05',name:'Sunset Sessions',owner:'Rhythm Wave',followers:67400,avg:920,total:298000,fol:{d1:128,d7:805,d28:3120},genre:'Deep House',sub:'Sunset, Chill',terr:'US, AU',campaigns:['Afterglow','Open Water','Sunroom'],sfa:'good'},
+];
+
+const payHistory = [
+  {date:'Jun 6, 2026',count:3,amount:680,status:'paid'},
+  {date:'May 30, 2026',count:2,amount:425,status:'paid'},
+  {date:'May 23, 2026',count:4,amount:910,status:'paid'},
+  {date:'May 16, 2026',count:2,amount:300,status:'paid'},
+];
+const weeklyPay = [
+  {w:'Apr 11',a:420},{w:'Apr 18',a:560},{w:'Apr 25',a:340},{w:'May 2',a:610},{w:'May 9',a:480},{w:'May 16',a:300},{w:'May 23',a:910},{w:'May 30',a:425},{w:'Jun 6',a:680},
+];
+const approvedBatch = [
+  {c:'Marigold - Sunroom',streams:40000,rate:10,payout:400},
+  {c:'Drift King - Neon Rain (bonus)',streams:2000,rate:10,payout:20},
+];
+const pendingBatch = [
+  {c:'Solene - Afterglow',delivered:18400,basis:30000,rate:10,est:300},
+  {c:'Aria Vale - Glass House',delivered:9800,basis:25000,rate:11,est:275},
+];
+const notifs = [
+  {dot:'green',title:'Payout approved',body:'$420 approved for the Friday Jun 19 batch.',time:'2h ago',go:"go('payments')"},
+  {dot:'red',title:'Campaign critical',body:'Vesper - Cobalt has no playlists attached.',time:'5h ago',go:"openCampaign('AC-142')"},
+  {dot:'amber',title:'Campaign behind pace',body:'Halcyon - Open Water is pacing below target.',time:'1d ago',go:"openCampaign('AC-138')"},
+  {dot:'green',title:'Offer partially accepted',body:'Solene - Afterglow accepted at 30,000 streams.',time:'3d ago',go:"openCampaign('AC-140')"},
+];
+
+/* ===================== HELPERS ===================== */
+const fmt = n => n.toLocaleString('en-US');
+const money = n => '$'+n.toLocaleString('en-US');
+function initials(s){return s.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();}
+function cover(c,art){return `<div class="cover" style="background:${COVERS[c]}">${initials(art)}</div>`;}
+function spURL(artist,song){return `https://open.spotify.com/search/${encodeURIComponent(artist+' '+song)}`;}
+function songLink(artist,song){return `<a class="song-link" href="${spURL(artist,song)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${song} ${svg('play',2)}</a>`;}
+function streamMetrics(daily){const v=Math.round(daily);return {h24:v,d7:Math.round(v*6.6),d28:Math.round(v*26),m12:Math.round(v*300)};}
+
+const STATUS = {onpace:{pill:'green',label:'On Pace'},slightly:{pill:'amber',label:'Slightly Behind'},behind:{pill:'red',label:'Behind Pace'},critical:{pill:'red',label:'Critical'},notstarted:{pill:'gray',label:'Not Started'},completed:{pill:'blue',label:'Completed'},paid:{pill:'green',label:'Paid'},sfa:{pill:'blue',label:'Awaiting SFA Access'}};
+const OFFER_STATUS = {submitted:{pill:'gray',label:'Submitted'},accepted:{pill:'green',label:'Accepted'},partial:{pill:'amber',label:'Partially Accepted'},notselected:{pill:'red',label:'Not Selected'},expired:{pill:'gray',label:'Expired'},filled:{pill:'gray',label:'Campaign Filled'},cancelled:{pill:'gray',label:'Cancelled'}};
+const PAY_STATUS = {projected:{pill:'gray',label:'Projected'},pending:{pill:'amber',label:'Pending Approval'},approved:{pill:'green',label:'Approved for Friday'},paid:{pill:'green',label:'Paid'},hold:{pill:'red',label:'On Hold'}};
+function pill(map,key){const s=map[key];return `<span class="pill ${s.pill}"><span class="pdot"></span>${s.label}</span>`;}
+function tier(t){return t==='t1'?'<span class="tier t1">★ Tier 1</span>':'<span class="tier std">Standard</span>';}
+function payoutPill(c){const amt=money(Math.round(c.accepted/1000*c.rate));return c.pay==='paid'?`<span class="pill green"><span class="pdot"></span>Paid · ${amt}</span>`:`<span class="pill amber"><span class="pdot"></span>Pending · ${amt}</span>`;}
+function getActive(id){return active.find(c=>c.id===id);}
+
+/* ===================== VIEW STATE / ROUTER ===================== */
+let route='home';
+const view={available:'cards',offers:'table',active:'cards'};
+let filterOpen=false;
+const filters={genre:new Set(),tier:new Set()};
+function setView(page,mode){view[page]=mode;render();}
+function isMobile(){return window.matchMedia('(max-width:760px)').matches;}
+function effView(page){return isMobile()?'cards':view[page];}
+function labelTables(root){root.querySelectorAll('table.tbl').forEach(t=>{const h=[...t.querySelectorAll('thead th')].map(x=>x.textContent.trim());t.querySelectorAll('tbody tr').forEach(tr=>{[...tr.children].forEach((td,i)=>{if(h[i]&&!td.hasAttribute('colspan'))td.setAttribute('data-label',h[i]);});});});}
+function go(id){route=id;closeDrawer();render();window.scrollTo(0,0);}
+function toggleDrawer(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('drawerBackdrop').classList.toggle('open');}
+function closeDrawer(){document.getElementById('sidebar').classList.remove('open');document.getElementById('drawerBackdrop').classList.remove('open');}
+const TABBAR=[['home','Home','home'],['available','Available','inbox'],['active','Active','zap'],['payments','Pay','wallet'],['more','More','list']];
+function viewToggle(page){
+  return `<div class="seg">
+    <button class="seg-btn ${view[page]==='cards'?'active':''}" onclick="setView('${page}','cards')">${svg('grid')}Cards</button>
+    <button class="seg-btn ${view[page]==='table'?'active':''}" onclick="setView('${page}','table')">${svg('list')}Table</button>
+  </div>`;
+}
+function render(){
+  document.getElementById('nav').innerHTML = `<div class="nav-label">Workspace</div>` +
+    NAV.map(n=>`<a class="nav-item ${route===n.id?'active':''}" onclick="go('${n.id}')">${svg(n.icon,2)}<span>${n.label}</span>${n.badge?`<span class="nav-badge ${n.badgeClass||''}">${n.badge}</span>`:''}</a>`).join('');
+  const titles={home:['Home',"Today's actions",'today'],available:['Available Campaigns','Campaigns open for your offers','opportunities'],offers:['My Offers','Offers you have submitted','your offers'],active:['My Active Campaigns','Campaigns you were accepted on','delivery'],playlists:['My Playlists','Your Spotify playlists & performance','your library'],payments:['Payments','Friday payout cycle','earnings'],settings:['Settings','Profile & notification preferences','account']};
+  document.getElementById('pageTitle').textContent=titles[route][0];
+  document.getElementById('pageSub').textContent=titles[route][1];
+  document.getElementById('pageEyebrow').textContent=titles[route][2];
+  const v=document.getElementById('view');
+  v.innerHTML = PAGES[route]();
+  requestAnimationFrame(enhanceView);
+  labelTables(v);
+  v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');
+  document.getElementById('tabbar').innerHTML = TABBAR.map(([id,label,icon])=>
+    id==='more'?`<a onclick="toggleDrawer()">${svg(icon)}<span>${label}</span></a>`
+    :`<a class="${route===id?'active':''}" onclick="go('${id}')">${svg(icon)}<span>${label}</span></a>`).join('');
+}
+const PAGES={};
+
+/* ===================== HOME ===================== */
+function stat(label,val,color,icon){
+  return `<div class="card" style="padding:18px 20px"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="stat-label">${label}</div><div class="stat-val">${val}</div></div><div class="ac-ic ${color}" style="width:36px;height:36px;border-radius:9px">${icon}</div></div></div>`;
+}
+function actionCard(o){
+  return `<div class="action-card ${o.cls||''}"><div class="ac-ic ${o.ic}">${svg(o.icon,2)}</div><div class="ac-body"><div class="ac-kicker ${o.ic}">${o.kicker}</div><div class="ac-title">${o.title}</div><div class="ac-text">${o.text}</div><div class="ac-actions">${o.actions}</div></div></div>`;
+}
+PAGES.home = () => {
+  const cards = [
+    actionCard({cls:'crit',ic:'red',icon:'flame',kicker:'Campaign Critical',title:'Vesper - Cobalt',
+      text:'This campaign is <b>critically behind pace</b>. Current pace is <b>0/day</b> and it needs <b>582/day</b> to finish on time. No playlists are attached yet.',
+      actions:`<button class="btn btn-primary btn-sm" onclick="openAddPlaylist('AC-142')">${svg('plus')}Add Playlists</button><button class="btn btn-ghost btn-sm" onclick="openCampaign('AC-142')">View Campaign</button>`}),
+    actionCard({ic:'blue',icon:'music',kicker:'Offer Accepted · Playlists Needed',title:'Aria Vale - Glass House',
+      text:'Your offer was accepted for <b>25,000 streams</b>. Only 2 playlists attached so far. Add more so delivery can keep pace.',
+      actions:`<button class="btn btn-primary btn-sm" onclick="openAddPlaylist('AC-141')">${svg('plus')}Add Playlists</button><button class="btn btn-ghost btn-sm" onclick="openCampaign('AC-141')">View Campaign</button>`}),
+    actionCard({cls:'warn',ic:'amber',icon:'trend',kicker:'Campaign Behind Pace',title:'Halcyon - Open Water',
+      text:'You need <b>1,773 streams/day</b> to finish on time. Current pace is <b>690/day</b>. This campaign needs more playlist support.',
+      actions:`<button class="btn btn-primary btn-sm" onclick="openAddPlaylist('AC-138')">${svg('plus')}Add More Playlists</button><button class="btn btn-ghost btn-sm" onclick="openCampaign('AC-138')">View Campaign</button>`}),
+    actionCard({ic:'red',icon:'inbox',kicker:'New Campaign Available',title:'Nova Sky - Midnight Drive',
+      text:'Genre: <b>Tech House</b> · Need: <b>100,000 streams</b> · Delivery window: <b>90 days</b>. Submit an offer if you can help deliver streams.',
+      actions:`<button class="btn btn-primary btn-sm" onclick="openOffer('AV-318')">${svg('send')}Submit Offer</button>`}),
+    actionCard({cls:'go',ic:'green',icon:'wallet',kicker:'Payout Ready',title:'You have $420 approved for payout',
+      text:'Next payout batch: <b>Friday, Jun 19</b>. This covers your completed Marigold - Sunroom campaign.',
+      actions:`<button class="btn btn-primary btn-sm" onclick="go('payments')">${svg('wallet')}View Payments</button>`}),
+  ];
+  return `
+  <div class="grid g-4" style="margin-bottom:8px">
+    ${stat('Needs your attention','4','red',svg('alert'))}
+    ${stat('Active campaigns','6','blue',svg('zap'))}
+    ${stat('Open offers','2','amber',svg('send'))}
+    ${stat('Approved for Friday','$420','green',svg('wallet'))}
+  </div>
+  <div class="sec-head"><h2 data-eyebrow="action queue">Needs Your Attention</h2><span class="count">5 items</span><div class="line"></div></div>
+  <div class="grid" style="gap:14px">${cards.join('')}</div>
+  <div class="sec-head"><h2 data-eyebrow="setup">Set up notifications</h2><div class="line"></div></div>
+  <div class="banner amber">${svg('alert',2)}<div style="flex:1"><div style="font-weight:600;margin-bottom:2px">Choose where you want to receive campaign and payout updates</div><div class="muted" style="font-size:12px">You haven't confirmed your notification channels yet. This takes about a minute.</div></div><button class="btn btn-primary btn-sm" onclick="go('settings')">${svg('settings')}Set Preferences</button></div>`;
+};
+
+/* ===================== AVAILABLE CAMPAIGNS ===================== */
+function passFilter(c){
+  if(filters.genre.size && !filters.genre.has(c.genre)) return false;
+  if(filters.tier.size && !filters.tier.has(c.tier)) return false;
+  return true;
+}
+function toggleFilter(type,val){const s=filters[type];s.has(val)?s.delete(val):s.add(val);render();}
+function clearFilters(){filters.genre.clear();filters.tier.clear();render();}
+PAGES.available = () => {
+  const open = available.filter(passFilter);
+  const direct = directDeals.filter(passFilter);
+  const fcount = filters.genre.size+filters.tier.size;
+  const genres=['Tech House','Indie Pop','Deep House','R&B'];
+  const directCards = direct.map(c=>`
+    <div class="card" style="padding:20px;border-color:hsl(var(--ai-blue)/0.35)">
+      <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px">
+        ${cover(c.cover,c.artist)}
+        <div style="flex:1;min-width:0"><div class="song-ttl">${songLink(c.artist,c.song)}</div><div class="song-art">${c.artist} · Released ${c.release}</div></div>
+        <span class="pill blue"><span class="pdot"></span>Pitched to you</span>
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">${tier(c.tier)}<span class="pill gray">${c.genre}</span><span class="pill gray">${c.sub}</span></div>
+      <div style="background:hsl(var(--ai-blue)/0.07);border:1px solid hsl(var(--ai-blue)/0.25);border-radius:10px;padding:13px 15px;margin-bottom:14px">
+        <div class="muted" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Proposed allocation</div>
+        <div class="grid g-2" style="gap:12px">
+          <div class="kv"><span class="k">Streams</span><span class="v mono">${fmt(c.propStreams)}</span></div>
+          <div class="kv"><span class="k">Rate</span><span class="v mono">$${c.propRate}/1k</span></div>
+          <div class="kv"><span class="k">Window</span><span class="v">${c.window} days</span></div>
+          <div class="kv"><span class="k">Payout</span><span class="v mono">${money(Math.round(c.propStreams/1000*c.propRate))}</span></div>
+        </div>
+      </div>
+      <div class="muted" style="font-size:12px;margin-bottom:14px">${c.note}</div>
+      <div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="acceptAllocation('${c.id}')">${svg('check')}Accept Allocation</button><button class="btn btn-ghost btn-sm" onclick="openOffer('${c.id}',true)">${svg('edit')}Adjust</button></div>
+    </div>`).join('');
+  const openCards = open.map(c=>`
+    <div class="card interactive" style="padding:20px" onclick="openOffer('${c.id}')">
+      <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px">${cover(c.cover,c.artist)}<div style="flex:1;min-width:0"><div class="song-ttl">${songLink(c.artist,c.song)}</div><div class="song-art">${c.artist} · Released ${c.release}</div></div>${tier(c.tier)}</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px"><span class="pill gray">${c.genre}</span><span class="pill gray">${c.sub}</span></div>
+      <div class="grid g-2" style="gap:14px;margin-bottom:16px">
+        <div class="kv"><span class="k">Remaining to allocate</span><span class="v mono">${fmt(c.need)}</span></div>
+        <div class="kv"><span class="k">Delivery window</span><span class="v">${c.window} days</span></div>
+        <div class="kv"><span class="k">Territories</span><span class="v" style="font-size:13px">${c.terr}</span></div>
+        <div class="kv"><span class="k">Min. offer</span><span class="v mono">${fmt(c.min)}</span></div>
+      </div>
+      <div class="hairline" style="margin-bottom:14px"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between"><span class="muted" style="font-size:11.5px;display:inline-flex;align-items:center;gap:5px">${svg('clock',2).replace('<svg','<svg style="width:13px;height:13px"')}Offer by ${c.deadline}</span><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openOffer('${c.id}')">${svg('send')}Submit Offer</button></div>
+    </div>`).join('');
+  const openTable = `<div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Campaign</th><th>Genre</th><th>Tier</th><th>Remaining to allocate</th><th>Window</th><th>Territories</th><th>Offer by</th><th></th></tr></thead><tbody>
+    ${open.map(c=>`<tr class="clickable" onclick="openOffer('${c.id}')"><td><div style="display:flex;align-items:center;gap:11px"><div class="cover" style="width:34px;height:34px;border-radius:7px;font-size:11px;background:${COVERS[c.cover]}">${initials(c.artist)}</div><div><div style="font-weight:600">${songLink(c.artist,c.song)}</div><div class="muted" style="font-size:11.5px">${c.artist} · Rel. ${c.release}</div></div></div></td><td><span class="pill gray">${c.genre}</span></td><td>${tier(c.tier)}</td><td class="mono">${fmt(c.need)}</td><td>${c.window}d</td><td class="mono" style="font-size:12px">${c.terr}</td><td class="muted" style="font-size:12px">${c.deadline}</td><td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openOffer('${c.id}')">Offer</button></td></tr>`).join('')}
+  </tbody></table></div>`;
+  return `
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
+    ${viewToggle('available')}
+    <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="filterOpen=!filterOpen;render()">${svg('filter')}Filter${fcount?` · ${fcount}`:''}</button>
+  </div>
+  ${filterOpen?`<div class="filter-pop">
+    <div class="filter-grp"><div class="fl">Genre</div><div class="chips">${genres.map(g=>`<span class="fchip ${filters.genre.has(g)?'on':''}" onclick="toggleFilter('genre','${g}')">${g}</span>`).join('')}</div></div>
+    <div class="filter-grp"><div class="fl">Tier</div><div class="chips"><span class="fchip ${filters.tier.has('t1')?'on':''}" onclick="toggleFilter('tier','t1')">Tier 1</span><span class="fchip ${filters.tier.has('std')?'on':''}" onclick="toggleFilter('tier','std')">Standard</span></div></div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-ghost btn-sm" onclick="clearFilters()">Clear all</button></div>
+  </div>`:''}
+  ${direct.length?`<div class="sec-head"><h2 data-eyebrow="pitched to you">Direct Allocations</h2><span class="count">Confirm or adjust</span><div class="line"></div></div><div class="grid g-2" style="margin-bottom:6px">${directCards}</div>`:''}
+  <div class="sec-head"><h2 data-eyebrow="marketplace">Open for Offers</h2><span class="count">${open.length} eligible</span><div class="line"></div></div>
+  ${open.length? (effView('available')==='cards'?`<div class="grid g-2">${openCards}</div>`:openTable)
+    : `<div class="card"><div class="empty"><div class="ec">${svg('inbox')}</div><h3>No campaigns match your filters</h3><p>No open campaigns match your selected genres or tier right now. Clear filters or check back when Artist Influence opens new campaigns for vendor offers.</p></div></div>`}
+  <div style="margin-top:20px" class="muted">
+    <div style="font-size:12px;line-height:1.6"><b style="color:hsl(var(--text-secondary))">Remaining to allocate</b> = streams still needing vendor coverage on this campaign (what is left for Artist Influence to assign). Client budget, margin, other vendors and competing offers are never shown.</div>
+  </div>`;
+};
+
+/* ===================== MY OFFERS ===================== */
+PAGES.offers = () => {
+  const cardEl = o=>`<div class="card" style="padding:18px">
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px"><div class="cover" style="width:40px;height:40px;border-radius:8px;font-size:13px;background:${COVERS[['a','b','c','d','e','g'][o.id.charCodeAt(4)%6]]}">${initials(o.artist)}</div><div style="flex:1"><div style="font-weight:700;font-size:14px">${songLink(o.artist,o.song)}</div><div class="muted" style="font-size:12px">${o.artist} · ${o.genre} · Released ${o.release}</div></div>${pill(OFFER_STATUS,o.status)}</div>
+    <div class="grid g-2" style="gap:12px;margin-bottom:${o.note?'12px':'0'}">
+      <div class="kv"><span class="k">Offered</span><span class="v mono">${fmt(o.offered)} @ $${o.rate}/1k</span></div>
+      <div class="kv"><span class="k">Accepted</span><span class="v mono">${o.accepted!=null?fmt(o.accepted):'—'}</span></div>
+      <div class="kv"><span class="k">Projected payout</span><span class="v mono">${o.payout!=null?money(o.payout):'—'}</span></div>
+      <div class="kv"><span class="k">Submitted</span><span class="v" style="font-size:13px">${o.date}</span></div>
+    </div>
+    ${o.note?`<div style="background:hsl(var(--surface-2)/0.5);border-radius:8px;padding:9px 12px;font-size:12px;color:hsl(var(--text-secondary))"><span class="muted">Note from Artist Influence:</span> ${o.note}</div>`:''}
+  </div>`;
+  const rows = offers.map(o=>`
+    <tr><td><div style="display:flex;align-items:center;gap:11px"><div class="cover" style="width:36px;height:36px;border-radius:8px;font-size:12px;background:${COVERS[['a','b','c','d','e','g'][o.id.charCodeAt(4)%6]]}">${initials(o.artist)}</div><div><div style="font-weight:600">${songLink(o.artist,o.song)}</div><div class="muted" style="font-size:11.5px">${o.artist} · ${o.genre} · Rel. ${o.release}</div></div></div></td><td class="mono">${fmt(o.offered)}</td><td class="mono">$${o.rate}/1k</td><td>${o.accepted!=null?`<span class="mono" style="color:hsl(var(--ai-success))">${fmt(o.accepted)}</span>`:'<span class="muted">—</span>'}</td><td>${o.payout!=null?`<span class="mono" style="font-weight:600">${money(o.payout)}</span>`:'<span class="muted">—</span>'}</td><td>${pill(OFFER_STATUS,o.status)}</td><td class="muted" style="font-size:12px">${o.date}</td></tr>
+    ${o.note?`<tr><td colspan="7" style="padding-top:0"><div style="background:hsl(var(--surface-2)/0.5);border-radius:8px;padding:9px 12px;font-size:12px;color:hsl(var(--text-secondary))"><span class="muted">Note from Artist Influence:</span> ${o.note}</div></td></tr>`:''}`).join('');
+  return `
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">${viewToggle('offers')}<div class="grid g-3" style="flex:1;margin-left:8px">${stat('Submitted','2','gray',svg('send'))}${stat('Accepted','2','green',svg('check'))}${stat('Projected payout','$575','blue',svg('wallet'))}</div></div>
+  ${effView('offers')==='cards'?`<div class="grid g-2">${offers.map(cardEl).join('')}</div>`:`<div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Campaign</th><th>Offered</th><th>Rate</th><th>Accepted</th><th>Projected payout</th><th>Status</th><th>Submitted</th></tr></thead><tbody>${rows}</tbody></table></div>`}
+  <div class="banner green" style="margin-top:18px">${svg('check',2.2)}<div style="font-size:12.5px"><b>Tip:</b> click a song title to open its Spotify link (provided by Artist Influence). Partial acceptance pays on the <b>accepted</b> amount, e.g. Solene - Afterglow offered 50,000, accepted 30,000, projected $300.</div></div>`;
+};
+
+/* ===================== MY ACTIVE CAMPAIGNS ===================== */
+function paceFillClass(s){return s==='onpace'||s==='completed'?'fill-green':(s==='slightly'?'fill-amber':(s==='sfa'?'fill-blue':'fill-red'));}
+function statusCopy(c){
+  return {onpace:'This campaign is on pace. No action needed right now.',
+    slightly:'This campaign is slightly behind pace. Add more support if delivery does not improve.',
+    behind:'This campaign is behind pace. Add more playlists or message Artist Influence if you cannot cover the remaining delivery.',
+    critical:c.pls.length===0?'This campaign is critically behind. No playlists are attached. Add playlists so delivery can begin.':'This campaign is critically behind pace. Add playlists or contact Artist Influence immediately.',
+    completed:'Delivery goal completed. This campaign is waiting for payout approval or processing.',
+    sfa:'Artist Influence is still setting up Spotify for Artists access for this campaign. You can add the playlists you have secured now, and we will backfill delivery from SFA once access is granted.'}[c.status];
+}
+function etaText(c){
+  if(c.status==='completed') return 'Completed '+c.end;
+  if(c.status==='sfa') return 'Pending SFA access';
+  if(c.curDaily===0) return 'Not enough delivery data yet';
+  const days=Math.ceil((c.accepted-c.delivered)/c.curDaily);
+  return `~${days} days`;
+}
+function activeCard(c){
+  const pct=Math.min(100,Math.round(c.delivered/c.accepted*100));
+  const remaining=Math.max(0,c.accepted-c.delivered);
+  const paceMap={'AC-140':54,'AC-141':40,'AC-138':60,'AC-142':5,'AC-143':12,'AC-135':100};
+  const paceAt=paceMap[c.id]||50;
+  let actions='';
+  if(c.status==='completed') actions=`<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();go('payments')">${svg('wallet')}View Payments</button>`;
+  else if(c.status==='onpace') actions=`<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openAddPlaylist('${c.id}')">${svg('plus')}Add Playlist</button><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openCampaign('${c.id}')">${svg('chart')}View Details</button>`;
+  else actions=`<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openAddPlaylist('${c.id}')">${svg('plus')}Add ${c.pls.length===0?'':'More '}Playlists</button><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openMessage('${c.id}')">${svg('msg')}Message AI</button>`;
+  const curColor=c.status==='sfa'?'hsl(var(--ai-blue))':(c.curDaily>=c.reqDaily?'hsl(var(--ai-success))':(c.curDaily===0?'hsl(var(--text-tertiary))':'hsl(var(--ai-amber))'));
+  return `
+  <div class="card interactive" style="padding:0;overflow:hidden;${c.status==='critical'?'border-color:hsl(var(--ai-red)/0.4)':''}" onclick="openCampaign('${c.id}')">
+    <div style="padding:18px 20px;display:flex;gap:14px;align-items:center;border-bottom:1px solid hsl(var(--hairline)/0.4)">
+      ${cover(c.cover,c.artist)}
+      <div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:9px"><span class="song-ttl">${songLink(c.artist,c.song)}</span>${tier(c.tier)}</div><div class="song-art">${c.artist} · ${c.genre} · Released ${c.release}</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">${pill(STATUS,c.status)}${payoutPill(c)}</div>
+    </div>
+    <div style="padding:18px 20px">
+      ${c.status==='sfa'?`<div class="banner blue" style="margin-bottom:16px">${svg('clock',2)}<div style="font-size:12px">Artist Influence is still getting Spotify for Artists access. Stats will populate once access is granted. You can add playlists now.</div></div>`:''}
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><span style="font-size:12.5px"><span class="mono" style="font-weight:700;font-size:15px">${c.status==='sfa'?'—':fmt(c.delivered)}</span> <span class="muted">/ ${fmt(c.accepted)} streams delivered</span></span><span class="mono" style="font-weight:700;font-size:14px">${c.status==='sfa'?'—':pct+'%'}</span></div>
+      <div class="bar" style="margin-bottom:6px"><span class="${paceFillClass(c.status)}" style="width:${c.status==='sfa'?0:pct}%"></span>${c.status!=='completed'&&c.status!=='sfa'?`<span class="pace-marker" style="left:${paceAt}%"></span>`:''}</div>
+      ${c.status!=='completed'&&c.status!=='sfa'?`<div class="muted" style="font-size:11px;margin-bottom:16px">▏ marker = where you should be today to finish on time</div>`:'<div style="margin-bottom:16px"></div>'}
+      <div class="grid g-4" style="gap:14px 16px;margin-bottom:16px">
+        <div class="kv"><span class="k">Remaining</span><span class="v mono">${fmt(remaining)}</span></div>
+        <div class="kv"><span class="k">Days left</span><span class="v mono">${c.daysLeft}</span></div>
+        <div class="kv"><span class="k">Required / day</span><span class="v mono">${fmt(c.reqDaily)}</span></div>
+        <div class="kv"><span class="k">Current / day</span><span class="v mono" style="color:${curColor}">${c.status==='sfa'?'—':fmt(c.curDaily)}</span></div>
+        <div class="kv"><span class="k">Window</span><span class="v" style="font-size:12.5px">${c.start} → ${c.end}</span></div>
+        <div class="kv"><span class="k">Est. completion</span><span class="v" style="font-size:12.5px">${etaText(c)}</span></div>
+        <div class="kv"><span class="k">Playlists</span><span class="v">${c.pls.length===0?'<span style="color:hsl(0 84% 66%)">None attached</span>':c.pls.length+' attached'}</span></div>
+        <div class="kv"><span class="k">Payout</span><span class="v mono" style="color:${c.pay==='paid'?'hsl(var(--ai-success))':'hsl(var(--ai-amber))'}">${money(Math.round(c.accepted/1000*c.rate))} ${c.pay==='paid'?'· Paid':'· Pending'}</span></div>
+      </div>
+      <div style="display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border-radius:9px;background:hsl(var(--surface-2)/0.5);margin-bottom:15px"><div style="margin-top:1px;color:${c.status==='onpace'||c.status==='completed'?'hsl(var(--ai-success))':(c.status==='slightly'?'hsl(var(--ai-amber))':(c.status==='sfa'?'hsl(var(--ai-blue))':'hsl(0 84% 66%)'))}">${svg(c.status==='onpace'||c.status==='completed'?'check':(c.status==='sfa'?'clock':'alert'),2)}</div><div style="font-size:12.5px;color:hsl(var(--text-secondary))">${statusCopy(c)}</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${actions}</div>
+    </div>
+  </div>`;
+}
+function activeTable(){
+  return `<div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Campaign</th><th>Status</th><th>Delivered</th><th>Required/day</th><th>Current/day</th><th>Days left</th><th>Payout</th><th></th></tr></thead><tbody>
+  ${active.map(c=>{const pct=Math.min(100,Math.round(c.delivered/c.accepted*100));return `<tr class="clickable" onclick="openCampaign('${c.id}')">
+    <td><div style="display:flex;align-items:center;gap:11px"><div class="cover" style="width:34px;height:34px;border-radius:7px;font-size:11px;background:${COVERS[c.cover]}">${initials(c.artist)}</div><div><div style="font-weight:600">${c.song}</div><div class="muted" style="font-size:11.5px">${c.artist} · Rel. ${c.release}</div></div></div></td>
+    <td>${pill(STATUS,c.status)}</td>
+    <td class="mono">${c.status==='sfa'?'—':fmt(c.delivered)} <span class="muted" style="font-size:11px">(${c.status==='sfa'?0:pct}%)</span></td>
+    <td class="mono">${fmt(c.reqDaily)}</td>
+    <td class="mono" style="color:${c.status==='sfa'?'hsl(var(--ai-blue))':(c.curDaily>=c.reqDaily?'hsl(var(--ai-success))':(c.curDaily===0?'hsl(var(--text-tertiary))':'hsl(var(--ai-amber))'))}">${c.status==='sfa'?'—':fmt(c.curDaily)}</td>
+    <td class="mono">${c.daysLeft}</td>
+    <td>${payoutPill(c)}</td>
+    <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openCampaign('${c.id}')">${svg('chart')}Details</button></td>
+  </tr>`;}).join('')}
+  </tbody></table></div>`;
+}
+PAGES.active = () => `
+  <div style="display:flex;align-items:center;margin-bottom:18px">${viewToggle('active')}</div>
+  ${effView('active')==='cards'?`<div class="grid g-2" style="align-items:start">${active.map(activeCard).join('')}</div>`:activeTable()}`;
+
+/* ===================== CAMPAIGN DETAIL MODAL ===================== */
+function paceChartSVG(c){
+  if(c.status==='sfa') return `<div class="chart-wrap" style="display:grid;place-items:center;height:200px;text-align:center"><div><div class="ac-ic blue" style="width:42px;height:42px;margin:0 auto 10px">${svg('clock',2)}</div><div class="muted" style="font-size:12.5px;max-width:340px">Delivery chart will appear once Spotify for Artists access is granted. Playlists you add now will be parsed retroactively.</div></div></div>`;
+  const W=620,H=210,L=48,R=16,T=12,B=30,pw=W-L-R,ph=H-T-B;
+  const total=c.daysTotal, elapsed=total-c.daysLeft, goal=c.accepted;
+  const forecastEnd=c.status==='completed'?goal:Math.max(c.delivered, c.delivered+c.curDaily*c.daysLeft);
+  const ymax=Math.max(goal,forecastEnd)*1.1;
+  const X=d=>L+(d/total)*pw, Y=v=>T+ph-(v/ymax)*ph;
+  const n=8, series=[];
+  for(let i=0;i<=n;i++){const d=elapsed*i/n;const ease=Math.pow(i/n,1.04);series.push([X(d),Y(c.delivered*ease)]);}
+  const actual='M '+series.map(p=>p.map(v=>v.toFixed(1)).join(' ')).join(' L ');
+  const ideal=`M ${X(0).toFixed(1)} ${Y(0).toFixed(1)} L ${X(total).toFixed(1)} ${Y(goal).toFixed(1)}`;
+  const fc=`M ${X(elapsed).toFixed(1)} ${Y(c.delivered).toFixed(1)} L ${X(total).toFixed(1)} ${Y(forecastEnd).toFixed(1)}`;
+  const stroke=c.status==='onpace'?'hsl(158 64% 50%)':(c.status==='slightly'?'hsl(42 100% 67%)':'hsl(0 84% 60%)');
+  const gy=Y(goal).toFixed(1);
+  const grid=[0,0.25,0.5,0.75,1].map(f=>{const y=(T+ph-f*ph).toFixed(1);return `<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="hsl(225 12% 26% / 0.35)" stroke-width="1"/><text x="${L-8}" y="${(+y+3).toFixed(1)}" text-anchor="end" font-size="9" fill="hsl(0 0% 62%)" font-family="JetBrains Mono">${fmt(Math.round(ymax*f/1000))}k</text>`;}).join('');
+  return `<div class="chart-wrap">
+    <svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">
+      ${grid}
+      <line x1="${L}" y1="${gy}" x2="${W-R}" y2="${gy}" stroke="hsl(0 0% 96% / 0.6)" stroke-width="1.3" stroke-dasharray="2 3"/>
+      <text x="${W-R}" y="${(+gy-6).toFixed(1)}" text-anchor="end" font-size="9.5" fill="hsl(0 0% 88%)" font-weight="600">GOAL ${fmt(goal)}</text>
+      <line x1="${X(elapsed).toFixed(1)}" y1="${T}" x2="${X(elapsed).toFixed(1)}" y2="${T+ph}" stroke="hsl(0 0% 96% / 0.3)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="${X(elapsed).toFixed(1)}" y="${H-10}" text-anchor="middle" font-size="9" fill="hsl(0 0% 62%)">Today</text>
+      <path d="${ideal}" fill="none" stroke="hsl(208 90% 60% / 0.55)" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <path d="${fc}" fill="none" stroke="${stroke}" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.55"/>
+      <path d="${actual}" fill="none" stroke="${stroke}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="${X(elapsed).toFixed(1)}" cy="${Y(c.delivered).toFixed(1)}" r="3.5" fill="${stroke}"/>
+    </svg>
+    <div class="chart-legend">
+      <span class="lg" style="color:${stroke}"><span class="ls"></span>Actual delivery</span>
+      <span class="lg" style="color:${stroke};opacity:.7"><span class="ls dash"></span>Forecast at current pace</span>
+      <span class="lg" style="color:hsl(208 90% 60%)"><span class="ls dash"></span>On-pace target</span>
+      <span class="lg" style="color:hsl(0 0% 88%)"><span class="ls dash"></span>Goal</span>
+    </div>
+  </div>`;
+}
+function statMini(k,v,color){return `<div class="card" style="padding:13px 15px;background:hsl(var(--surface-2)/0.5)"><div class="stat-label">${k}</div><div class="mono" style="font-size:18px;font-weight:700;margin-top:3px;${color?`color:${color}`:''}">${v}</div></div>`;}
+function openCampaign(id){
+  const c=getActive(id);
+  const pct=Math.min(100,Math.round(c.delivered/c.accepted*100));
+  const remaining=Math.max(0,c.accepted-c.delivered);
+  const payout=Math.round(c.accepted/1000*c.rate);
+  const plRows = c.pls.length? c.pls.map(p=>{
+    if(c.status==='sfa') return `<tr><td style="font-weight:600">${p.name}</td><td colspan="4" class="muted" style="font-size:12px">Pending SFA tracking</td></tr>`;
+    const m=streamMetrics(p.daily);
+    return `<tr><td style="font-weight:600">${p.name}</td><td class="mono">${fmt(m.h24)}</td><td class="mono">${fmt(m.d7)}</td><td class="mono">${fmt(m.d28)}</td><td class="mono">${fmt(m.m12)}</td></tr>`;
+  }).join('') : `<tr><td colspan="5"><div class="muted" style="font-size:12.5px;padding:6px 0">No playlists attached yet. Add playlists so delivery can begin.</div></td></tr>`;
+  const curColor=c.status==='sfa'?'hsl(var(--ai-blue))':(c.curDaily>=c.reqDaily?'hsl(var(--ai-success))':(c.curDaily===0?'':'hsl(var(--ai-amber))'));
+  openModal(`<div class="modal xwide">
+    <div class="modal-head">
+      ${cover(c.cover,c.artist)}
+      <div style="flex:1"><h3>${songLink(c.artist,c.song)}</h3><div class="muted" style="font-size:12.5px;margin-top:2px">${c.artist} · ${c.genre} · Released ${c.release} · ${tier(c.tier)}</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">${pill(STATUS,c.status)}${payoutPill(c)}</div>
+      <button class="close-x" onclick="closeM()">${svg('x')}</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid g-4" style="gap:12px;margin-bottom:20px">
+        ${statMini('Delivered',c.status==='sfa'?'—':fmt(c.delivered)+' · '+pct+'%')}
+        ${statMini('Remaining',fmt(remaining))}
+        ${statMini('Required / day',fmt(c.reqDaily))}
+        ${statMini('Current / day',c.status==='sfa'?'—':fmt(c.curDaily),curColor)}
+        ${statMini('Days left',c.daysLeft)}
+        ${statMini('Window',c.start+' → '+c.end)}
+        ${statMini('Est. completion',etaText(c))}
+        ${statMini('Payout',money(payout),c.pay==='paid'?'hsl(var(--ai-success))':'hsl(var(--ai-amber))')}
+      </div>
+      <div class="sec-head" style="margin:0 0 12px"><h2 data-eyebrow="delivery" style="font-size:14px">Actual pace vs projected outcome</h2><div class="line"></div></div>
+      ${paceChartSVG(c)}
+      <div class="sec-head" style="margin:24px 0 12px"><h2 data-eyebrow="placements" style="font-size:14px">Playlists carrying this song</h2><span class="count">${c.pls.length} attached</span><div class="line"></div></div>
+      <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Playlist</th><th>Past 24h</th><th>Past 7d</th><th>Past 28d</th><th>Past 12mo</th></tr></thead><tbody>${plRows}</tbody></table></div>
+      <div class="sec-head" style="margin:24px 0 12px"><h2 data-eyebrow="payout" style="font-size:14px">Payment</h2><div class="line"></div></div>
+      <div class="banner ${c.pay==='paid'?'green':'amber'}">${svg(c.pay==='paid'?'check':'clock',2)}<div style="flex:1;font-size:12.5px">${c.pay==='paid'?`This campaign has been <b>paid</b>: ${money(payout)} included in a completed Friday batch.`:`Payout of <b>${money(payout)}</b> is <b>pending approval</b>. It will be batched for a Friday payout once approved.`}</div><button class="btn btn-ghost btn-sm" onclick="closeM();go('payments')">${svg('wallet')}View in Payments</button></div>
+    </div>
+    <div class="modal-foot">
+      ${c.status!=='completed'?`<button class="btn btn-ghost btn-sm" onclick="closeM();openMessage('${c.id}')">${svg('msg')}Message AI</button><button class="btn btn-primary btn-sm" onclick="closeM();openAddPlaylist('${c.id}')">${svg('plus')}Add Playlists</button>`:`<button class="btn btn-primary btn-sm" onclick="closeM();go('payments')">${svg('wallet')}View Payments</button>`}
+    </div>
+  </div>`);
+}
+
+/* ===================== MY PLAYLISTS ===================== */
+PAGES.playlists = () => {
+  const rows = playlists.map(p=>`
+    <tr class="clickable" onclick="openPlaylist('${p.id}')">
+      <td><div style="display:flex;align-items:center;gap:11px"><div class="cover" style="width:38px;height:38px;border-radius:8px;font-size:12px;background:${COVERS[['a','b','c','f','g'][parseInt(p.id.slice(3))%5]]}">${svg('music',2).replace('<svg','<svg style="width:16px;height:16px"')}</div><div><div style="font-weight:600">${p.name}</div><div class="muted" style="font-size:11.5px">${p.owner} · ${p.id}</div></div></div></td>
+      <td><span class="pill gray">${p.genre}</span></td>
+      <td><span class="fol-link mono" onclick="event.stopPropagation();openFollowers('${p.id}')">${fmt(p.followers)} <span style="color:hsl(var(--ai-success));font-size:10.5px;font-weight:700">↑</span></span></td>
+      <td>${p.avg>0?`<span class="mono" style="font-weight:600">${fmt(p.avg)}/day</span>`:`<span class="pill amber" style="font-size:10.5px"><span class="pdot"></span>Pending tracking</span>`}</td>
+      <td class="mono">${p.terr}</td>
+      <td>${p.campaigns.length?`<span class="pill blue">${p.campaigns.length} active</span>`:'<span class="muted">—</span>'}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openPlaylist('${p.id}')">${svg('chart')}View</button></td>
+    </tr>`).join('');
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px"><div class="grid g-3" style="flex:1;max-width:560px">${stat('Saved playlists','5','blue',svg('music'))}${stat('Total reach','275K','green',svg('trend'))}${stat('Avg. daily streams','3,460','amber',svg('zap'))}</div><button class="btn btn-primary" onclick="openAddPlaylist()">${svg('plus')}Add Playlist</button></div>
+  <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Playlist</th><th>Genre</th><th>Followers</th><th>Avg. daily streams</th><th>Territory</th><th>Campaigns</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="banner green" style="margin-top:18px">${svg('spark',2)}<div style="font-size:12.5px"><b>Avg. daily streams are auto-calculated</b> from songs Artist Influence tracks on each playlist via SFA. Genre and assumed territory are auto-grabbed from the playlist's songs and the language of its title and description. Click any playlist to see per-campaign 24h / 7d / 28d / 12mo streams. Duplicates are deduped by Spotify playlist ID.</div></div>`;
+};
+function openPlaylist(id){
+  const p=playlists.find(x=>x.id===id);
+  const campRows = p.campaigns.length? p.campaigns.map((cn,i)=>{
+    const daily=[480,360,300,540][i%4]+ (i*40);
+    const m=streamMetrics(daily);
+    return `<tr><td style="font-weight:600">${cn}</td><td class="mono">${fmt(m.h24)}</td><td class="mono">${fmt(m.d7)}</td><td class="mono">${fmt(m.d28)}</td><td class="mono">${fmt(m.m12)}</td></tr>`;
+  }).join('') : `<tr><td colspan="5"><div class="muted" style="font-size:12.5px;padding:6px 0">Not attached to any campaign yet.</div></td></tr>`;
+  openModal(`<div class="modal wide">
+    <div class="modal-head"><div class="cover" style="width:46px;height:46px;background:${COVERS[['a','b','c','f','g'][parseInt(p.id.slice(3))%5]]}">${svg('music',2).replace('<svg','<svg style="width:20px;height:20px"')}</div><div style="flex:1"><h3>${p.name}</h3><div class="muted" style="font-size:12.5px;margin-top:2px">${fmt(p.followers)} followers · ${p.genre} · ${p.terr}</div></div><button class="close-x" onclick="closeM()">${svg('x')}</button></div>
+    <div class="modal-body">
+      <div class="grid g-4" style="gap:12px;margin-bottom:20px">${statMini('Avg. daily streams',p.avg>0?fmt(p.avg):'Pending')}${statMini('Total streams driven',p.total>0?fmt(p.total):'Pending')}
+        <div class="card" style="padding:13px 15px;background:hsl(var(--surface-2)/0.5);cursor:pointer" onclick="openFollowers('${p.id}')"><div class="stat-label" style="display:flex;align-items:center;gap:5px">Followers ${svg('trend',2).replace('<svg','<svg style="width:11px;height:11px"')}</div><div class="mono" style="font-size:18px;font-weight:700;margin-top:3px">${fmt(p.followers)}</div><div style="font-size:10.5px;color:hsl(var(--ai-success));margin-top:2px">+${fmt(p.fol.d7)} this week</div></div>
+        ${statMini('Active campaigns',p.campaigns.length)}</div>
+      <div class="sec-head" style="margin:0 0 12px"><h2 data-eyebrow="performance" style="font-size:14px">Per-campaign streams from this playlist</h2><div class="line"></div></div>
+      <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Campaign</th><th>Past 24h</th><th>Past 7d</th><th>Past 28d</th><th>Past 12mo</th></tr></thead><tbody>${campRows}</tbody></table></div>
+      ${p.sfa==='pending'?`<div class="banner amber" style="margin-top:16px">${svg('clock',2)}<div style="font-size:12px">This playlist does not have enough SFA tracking history yet. Stream metrics will appear once tracking data is available.</div></div>`:''}
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeM()">Close</button></div>
+  </div>`);
+}
+function folDelta(label,v){const up=v>=0;return `<div class="card" style="padding:12px 14px;background:hsl(var(--surface-2)/0.5)"><div class="stat-label">${label}</div><div class="mono" style="font-size:18px;font-weight:700;margin-top:3px;color:${up?'hsl(var(--ai-success))':'hsl(0 84% 66%)'}">${up?'+':''}${fmt(v)}</div></div>`;}
+function folSparkline(p){
+  const W=560,H=130,L=8,R=8,T=12,B=12,days=28;
+  const end=p.followers, start=end-p.fol.d28;
+  const pts=[];
+  for(let i=0;i<=days;i++){const t=i/days;const wobble=Math.sin(i*1.4)*Math.abs(p.fol.d28)*0.012;pts.push(start+(end-start)*Math.pow(t,0.96)+wobble);}
+  const mn=Math.min(...pts), mx=Math.max(...pts), span=(mx-mn)||1;
+  const X=i=>L+(i/days)*(W-L-R), Y=v=>T+(H-T-B)-((v-mn)/span)*(H-T-B);
+  const line='M '+pts.map((v,i)=>X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' L ');
+  const area=line+` L ${X(days).toFixed(1)} ${H-B} L ${X(0).toFixed(1)} ${H-B} Z`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">
+    <defs><linearGradient id="folg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="hsl(158 64% 44% / 0.32)"/><stop offset="100%" stop-color="hsl(158 64% 44% / 0)"/></linearGradient></defs>
+    <path d="${area}" fill="url(#folg)" stroke="none"/>
+    <path d="${line}" fill="none" stroke="hsl(158 64% 50%)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${X(days).toFixed(1)}" cy="${Y(pts[days]).toFixed(1)}" r="3.5" fill="hsl(158 64% 50%)"/>
+  </svg>`;
+}
+function openFollowers(id){
+  const p=playlists.find(x=>x.id===id);
+  openModal(`<div class="modal">
+    <div class="modal-head"><div class="ac-ic green" style="width:42px;height:42px">${svg('trend',2)}</div><div style="flex:1"><h3>Follower growth</h3><div class="muted" style="font-size:12.5px;margin-top:2px">${p.name}</div></div><button class="close-x" onclick="closeM()">${svg('x')}</button></div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:3px"><span class="mono" style="font-size:30px;font-weight:700">${fmt(p.followers)}</span><span class="muted" style="font-size:13px">followers</span></div>
+      <div class="muted" style="font-size:11.5px;margin-bottom:18px">Tracked daily from the Artist Influence internal database</div>
+      <div class="grid g-3" style="gap:12px;margin-bottom:18px">${folDelta('Past 24h',p.fol.d1)}${folDelta('Past 7d',p.fol.d7)}${folDelta('Past 28d',p.fol.d28)}</div>
+      <div class="chart-wrap">${folSparkline(p)}<div class="muted" style="font-size:11px;margin-top:8px;text-align:center">Daily follower count, last 28 days</div></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeM()">Close</button></div>
+  </div>`);
+}
+
+/* ===================== PAYMENTS ===================== */
+PAGES.payments = () => {
+  const upcoming=[{c:'Marigold - Sunroom',goal:40000,delivered:40000,rate:10,payout:400,status:'approved'},{c:'Drift King - Neon Rain (bonus)',goal:2000,delivered:2000,rate:10,payout:20,status:'approved'}];
+  const pending=[{c:'Solene - Afterglow',delivered:18400,basis:30000,rate:10,est:300,status:'pending'},{c:'Aria Vale - Glass House',delivered:9800,basis:25000,rate:11,est:275,status:'pending'}];
+  const upRows=upcoming.map(u=>`<tr><td style="font-weight:600">${u.c}</td><td class="mono">${fmt(u.goal)}</td><td class="mono">${fmt(u.delivered)}</td><td class="mono">$${u.rate}/1k</td><td class="mono" style="font-weight:700">${money(u.payout)}</td><td class="muted" style="font-size:12px">Fri Jun 19</td><td>${pill(PAY_STATUS,u.status)}</td></tr>`).join('');
+  const pendRows=pending.map(p=>`<tr><td style="font-weight:600">${p.c}</td><td class="mono">${fmt(p.delivered)}</td><td class="mono">${fmt(p.basis)} <span class="muted" style="font-size:11px">accepted</span></td><td class="mono">$${p.rate}/1k</td><td class="mono" style="font-weight:600">${money(p.est)}</td><td>${pill(PAY_STATUS,p.status)}</td></tr>`).join('');
+  const histRows=payHistory.map(h=>`<tr><td style="font-weight:600" class="mono">${h.date}</td><td>${h.count} campaigns</td><td class="mono" style="font-weight:700">${money(h.amount)}</td><td>${pill(PAY_STATUS,'paid')}</td></tr>`).join('');
+  return `
+  <div class="grid g-4" style="margin-bottom:24px">
+    <div class="card interactive" style="padding:18px 20px;border-color:hsl(var(--ai-success)/0.35)" onclick="openPayDetail('approved')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="stat-label">Approved for next Friday</div><div class="stat-val" style="color:hsl(var(--ai-success))">$420</div><div class="muted" style="font-size:11.5px;margin-top:3px">Batch: Fri Jun 19</div></div><div class="ac-ic green" style="width:36px;height:36px;border-radius:9px">${svg('wallet')}</div></div>
+      <div class="pay-cta">View campaigns →</div>
+    </div>
+    <div class="card interactive" style="padding:18px 20px" onclick="openPayDetail('pending')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="stat-label">Pending approval</div><div class="stat-val">$575</div></div><div class="ac-ic amber" style="width:36px;height:36px;border-radius:9px">${svg('clock')}</div></div>
+      <div class="pay-cta">View campaigns →</div>
+    </div>
+    <div class="card interactive" style="padding:18px 20px" onclick="openPayDetail('lifetime')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="stat-label">Paid lifetime</div><div class="stat-val">$12,840</div></div><div class="ac-ic blue" style="width:36px;height:36px;border-radius:9px">${svg('trend')}</div></div>
+      <div class="pay-cta">View weekly trend →</div>
+    </div>
+    <div class="card interactive" style="padding:18px 20px" onclick="openPayDetail('approved')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="stat-label">Next payout date</div><div class="stat-val">Jun 19</div><div class="muted" style="font-size:11.5px;margin-top:3px">in 7 days</div></div><div class="ac-ic gray" style="width:36px;height:36px;border-radius:9px">${svg('cal')}</div></div>
+      <div class="pay-cta">View batch →</div>
+    </div>
+  </div>
+  <div class="sec-head"><h2 data-eyebrow="next batch">Upcoming Friday Payout</h2><span class="count">Fri Jun 19</span><div class="line"></div></div>
+  <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Campaign</th><th>Accepted goal</th><th>Approved streams</th><th>Rate</th><th>Approved payout</th><th>Payout date</th><th>Status</th></tr></thead><tbody>${upRows}</tbody></table></div>
+  <div class="sec-head"><h2 data-eyebrow="in review">Pending Approval</h2><span class="count">2 campaigns</span><div class="line"></div></div>
+  <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Campaign</th><th>Delivered</th><th>Payout basis</th><th>Rate</th><th>Estimated payout</th><th>Status</th></tr></thead><tbody>${pendRows}</tbody></table></div>
+  <div class="sec-head"><h2 data-eyebrow="paid out">Payment History</h2><div class="line"></div></div>
+  <div class="card" style="overflow:hidden"><table class="tbl"><thead><tr><th>Payout date</th><th>Campaigns included</th><th>Amount paid</th><th>Status</th></tr></thead><tbody>${histRows}</tbody></table></div>
+  <div class="banner green" style="margin-top:20px">${svg('check',2.2)}<div style="font-size:12.5px">Payout methods on file: <b>Wise · ****8821</b> and <b>PayPal · payments@rhythmwave.io</b>. Artist Influence pays approved campaigns every Friday. Projected payout = accepted streams ÷ 1,000 × accepted rate.</div></div>`;
+};
+function weeklyBars(){
+  const d=weeklyPay,W=600,H=190,L=44,R=14,T=16,B=30,pw=W-L-R,ph=H-T-B;
+  const max=Math.max(...d.map(x=>x.a))*1.18;
+  const slot=pw/d.length, bw=Math.min(34,slot*0.56);
+  const X=i=>L+slot*i+slot/2, Y=v=>T+ph-(v/max)*ph;
+  const grid=[0,0.5,1].map(f=>{const y=(T+ph-f*ph).toFixed(1);return `<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="hsl(225 12% 26% / 0.35)"/><text x="${L-8}" y="${(+y+3).toFixed(1)}" text-anchor="end" font-size="9" fill="hsl(0 0% 62%)" font-family="JetBrains Mono">$${fmt(Math.round(max*f))}</text>`;}).join('');
+  const bars=d.map((x,i)=>{const h=Math.max(2,(x.a/max)*ph),y=Y(x.a),cx=X(i);return `<rect x="${(cx-bw/2).toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="hsl(var(--ai-red) / ${i===d.length-1?'0.95':'0.5'})"/><text x="${cx.toFixed(1)}" y="${H-10}" text-anchor="middle" font-size="8.5" fill="hsl(0 0% 62%)">${x.w}</text>`;}).join('');
+  return `<div class="chart-wrap"><svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">${grid}${bars}</svg><div class="muted" style="font-size:11px;margin-top:8px;text-align:center">Weekly payouts, last ${d.length} weeks</div></div>`;
+}
+function openPayDetail(kind){
+  if(kind==='lifetime'){
+    const total=weeklyPay.reduce((s,x)=>s+x.a,0), avg=Math.round(total/weeklyPay.length);
+    openModal(`<div class="modal wide">
+      <div class="modal-head"><div class="ac-ic blue" style="width:42px;height:42px">${svg('trend',2)}</div><div style="flex:1"><h3>Paid lifetime</h3><div class="muted" style="font-size:12.5px;margin-top:2px">Week over week payouts</div></div><button class="close-x" onclick="closeM()">${svg('x')}</button></div>
+      <div class="modal-body">
+        <div class="grid g-3" style="gap:12px;margin-bottom:20px">${statMini('Paid lifetime','$12,840')}${statMini('Avg / week',money(avg))}${statMini('Weeks paid',weeklyPay.length)}</div>
+        ${weeklyBars()}
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeM()">Close</button></div>
+    </div>`);
+    return;
+  }
+  if(kind==='approved'){
+    const rows=approvedBatch.map(b=>`<tr><td style="font-weight:600">${b.c}</td><td class="mono">${fmt(b.streams)}</td><td class="mono">$${b.rate}/1k</td><td class="mono" style="font-weight:700">${money(b.payout)}</td></tr>`).join('');
+    openModal(`<div class="modal">
+      <div class="modal-head"><div class="ac-ic green" style="width:42px;height:42px">${svg('wallet',2)}</div><div style="flex:1"><h3>Approved for Friday Jun 19</h3><div class="muted" style="font-size:12.5px;margin-top:2px">Campaigns in the next payout batch</div></div><button class="close-x" onclick="closeM()">${svg('x')}</button></div>
+      <div class="modal-body">
+        <div class="card" style="overflow:hidden;margin-bottom:16px"><table class="tbl"><thead><tr><th>Campaign</th><th>Approved streams</th><th>Rate</th><th>Payout</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 2px"><span class="muted" style="font-size:12.5px">Total approved · 2 campaigns</span><span class="mono" style="font-size:20px;font-weight:700;color:hsl(var(--ai-success))">$420</span></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeM()">Close</button><button class="btn btn-primary btn-sm" onclick="closeM()">${svg('check')}Got it</button></div>
+    </div>`);
+    return;
+  }
+  const rows=pendingBatch.map(b=>`<tr><td style="font-weight:600">${b.c}</td><td class="mono">${fmt(b.delivered)}</td><td class="mono">${fmt(b.basis)} <span class="muted" style="font-size:11px">accepted</span></td><td class="mono">$${b.rate}/1k</td><td class="mono" style="font-weight:700">${money(b.est)}</td></tr>`).join('');
+  openModal(`<div class="modal wide">
+    <div class="modal-head"><div class="ac-ic amber" style="width:42px;height:42px">${svg('clock',2)}</div><div style="flex:1"><h3>Pending approval</h3><div class="muted" style="font-size:12.5px;margin-top:2px">Earned but not yet approved for a Friday batch</div></div><button class="close-x" onclick="closeM()">${svg('x')}</button></div>
+    <div class="modal-body">
+      <div class="card" style="overflow:hidden;margin-bottom:16px"><table class="tbl"><thead><tr><th>Campaign</th><th>Delivered</th><th>Payout basis</th><th>Rate</th><th>Est. payout</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 2px"><span class="muted" style="font-size:12.5px">Total pending · 2 campaigns</span><span class="mono" style="font-size:20px;font-weight:700;color:hsl(var(--ai-amber))">$575</span></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeM()">Close</button></div>
+  </div>`);
+}
+
+/* ===================== SETTINGS ===================== */
+let settingsTab='notif';
+const masterChannels={email:true,whatsapp:true,sms:false,inapp:true};
+const payMethods={paypal:true,zelle:false,wire:false,wise:true};
+PAGES.settings = () => `
+  <div class="tabs" style="margin-bottom:24px">
+    <span class="tab ${settingsTab==='profile'?'active':''}" onclick="settingsTab='profile';render()">Vendor Profile</span>
+    <span class="tab ${settingsTab==='notif'?'active':''}" onclick="settingsTab='notif';render()">Notification Preferences</span>
+    <span class="tab ${settingsTab==='payout'?'active':''}" onclick="settingsTab='payout';render()">Payout Details</span>
+  </div>
+  ${settingsTab==='profile'?settingsProfile():settingsTab==='payout'?settingsPayout():settingsNotif()}`;
+function settingsProfile(){
+  const f=(l,v,ro)=>`<div class="field"><label>${l}</label><input class="input" value="${v}" ${ro?'readonly style="opacity:.6"':''}/></div>`;
+  return `<div class="card" style="padding:26px;max-width:760px"><div class="eyebrow" style="margin-bottom:4px">Vendor Profile</div><h3 style="font-size:17px;margin-bottom:20px">Account details</h3>
+    <div class="inline-2">${f('Vendor name','Rhythm Wave Media')}${f('Contact name','Jordan Reyes')}</div>
+    <div class="inline-2">${f('Email','jordan@rhythmwave.io')}${f('Default timezone','America/Los_Angeles (PT)')}</div>
+    <div class="inline-2">${f('WhatsApp number','+1 (415) 555-0182')}${f('iMessage / SMS number','+1 (415) 555-0182')}</div>
+    <div class="hairline" style="margin:18px 0"></div>
+    <div class="inline-2">${f('Approved genres','Tech House, Deep House, Indie Pop, R&B',true)}${f('Approved territories','US, UK, EU, CA, AU',true)}</div>
+    <div class="field"><label>Tier eligibility</label><div>${tier('t1')} <span class="muted" style="font-size:12px;margin-left:8px">Set by Artist Influence ops</span></div></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px"><button class="btn btn-ghost btn-sm">Cancel</button><button class="btn btn-primary btn-sm" onclick="toast('Profile saved')">${svg('check')}Save Changes</button></div>
+  </div>`;
+}
+function togglePay(k){payMethods[k]=!payMethods[k];render();}
+function settingsPayout(){
+  const method=(k,ic,name,sub,detail)=>`<div class="pm-card ${payMethods[k]?'on':''}">
+    <div class="pm-head" onclick="togglePay('${k}')"><div class="pm-ic">${svg(ic,2)}</div><div style="flex:1"><div style="font-weight:600;font-size:13.5px">${name}</div><div class="muted" style="font-size:11.5px">${sub}</div></div><div class="tg ${payMethods[k]?'on':''}"></div></div>
+    <div class="pm-detail">${detail}</div></div>`;
+  return `<div class="card" style="padding:26px;max-width:640px">
+    <div class="eyebrow" style="margin-bottom:4px">Payout Details</div><h3 style="font-size:17px;margin-bottom:6px">How you get paid</h3>
+    <p class="muted" style="font-size:13px;margin-bottom:20px">Select one or more payout methods. Artist Influence pays out every Friday for approved campaigns.</p>
+    ${method('paypal','wallet','PayPal','Receive via PayPal email',`<div class="field" style="margin:0"><label>PayPal email</label><input class="input" value="payments@rhythmwave.io"/></div>`)}
+    ${method('zelle','phone','Zelle','Receive via phone or email',`<div class="inline-2"><div class="field" style="margin:0"><label>Zelle phone</label><input class="input" placeholder="+1 (415) 555-0182"/></div><div class="field" style="margin:0"><label>Or email</label><input class="input" placeholder="name@email.com"/></div></div>`)}
+    ${method('wire','bank','Wire / ACH','Bank transfer details',`<div class="inline-2"><div class="field" style="margin:0 0 12px"><label>Account holder</label><input class="input" placeholder="Rhythm Wave Media LLC"/></div><div class="field" style="margin:0 0 12px"><label>Bank name</label><input class="input" placeholder="Chase"/></div><div class="field" style="margin:0"><label>Routing number</label><input class="input" placeholder="•••••••••"/></div><div class="field" style="margin:0"><label>Account number</label><input class="input" placeholder="••••••8821"/></div></div>`)}
+    ${method('wise','dollar','Wise','International transfer',`<div class="field" style="margin:0"><label>Wise account email</label><input class="input" value="finance@rhythmwave.io"/></div>`)}
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px"><button class="btn btn-primary btn-sm" onclick="toast('Payout details saved')">${svg('check')}Save</button></div>
+  </div>`;
+}
+const NOTIF_CATS=[
+  {key:'opps',name:'New campaign opportunities',desc:'New eligible campaigns & reopened campaigns',freq:'Immediate'},
+  {key:'offers',name:'Offer status updates',desc:'Accepted, partially accepted, rejected, expired',freq:'Immediate'},
+  {key:'pladd',name:'Songs needing playlist adds',desc:'Accepted campaigns with no playlists attached',freq:'Immediate'},
+  {key:'pace',name:'Campaign pacing alerts',desc:'Slightly behind, behind, or critical',freq:'Immediate',locked:true},
+  {key:'pl',name:'Playlist updates',desc:'Approvals, rejections, duplicate detected, SFA data',freq:'Daily digest'},
+  {key:'weekly',name:'Weekly campaign summary',desc:'All active campaigns, pacing, payouts',freq:'Weekly digest'},
+  {key:'pay',name:'Payment updates',desc:'Approved, paid, on hold, adjusted',freq:'Immediate',locked:true},
+  {key:'msg',name:'Messages from Artist Influence',desc:'Ops messages & requests',freq:'Immediate',locked:true},
+];
+function toggleMaster(k){masterChannels[k]=!masterChannels[k];render();}
+function settingsNotif(){
+  const chanCard=(ic,name,sub,verified)=>`<div class="chan-card"><div class="chan-ic">${svg(ic,2)}</div><div style="flex:1"><div style="font-weight:600;font-size:13px">${name}</div><div class="muted" style="font-size:11.5px">${sub}</div></div>${verified?'<span class="pill green" style="font-size:10.5px"><span class="pdot"></span>Verified</span>':'<button class="btn btn-ghost btn-sm" onclick="toast(\'Verification sent\')">Verify</button>'}</div>`;
+  const mchan=(k,ic,name)=>`<div class="mchan ${masterChannels[k]?'on':''}" onclick="toggleMaster('${k}')"><div class="mcheck">${svg('check',3)}</div>${svg(ic,2)}${name}</div>`;
+  const cols=['email','whatsapp','sms','inapp'];
+  const matrix=NOTIF_CATS.map(c=>`<div class="matrix-row">
+    <div><div class="cat-name">${c.name} ${c.locked?'<span class="muted" style="font-size:10px;font-weight:500">· in-app always on</span>':''}</div><div class="cat-desc">${c.desc}</div></div>
+    ${cols.map((col,i)=>`<div class="matrix-cell"><div class="tg ${masterChannels[col]?'on':''}" onclick="this.classList.toggle('on')"></div></div>`).join('')}
+    <div class="matrix-cell" style="justify-self:end"><select class="freq-sel"><option ${c.freq==='Immediate'?'selected':''}>Immediate</option><option ${c.freq==='Daily digest'?'selected':''}>Daily digest</option><option ${c.freq==='Weekly digest'?'selected':''}>Weekly digest</option><option>Off</option></select></div>
+  </div>`).join('');
+  return `
+  <div class="card" style="padding:24px;margin-bottom:20px">
+    <div class="eyebrow" style="margin-bottom:4px">Channels</div><h3 style="font-size:16px;margin-bottom:6px">Send my notifications to</h3>
+    <p class="muted" style="font-size:12.5px;margin-bottom:16px">Pick any combination of channels. This applies to every notification type at once. You can still fine-tune individual types in the matrix below.</p>
+    <div class="chips" style="margin-bottom:20px">${mchan('email','mail','Email')}${mchan('whatsapp','whatsapp','WhatsApp')}${mchan('sms','phone','iMessage / SMS')}${mchan('inapp','app','In-app')}</div>
+    <div class="hairline" style="margin-bottom:20px"></div>
+    <div class="grid g-2" style="gap:12px">
+      ${chanCard('mail','Email','jordan@rhythmwave.io',true)}
+      ${chanCard('whatsapp','WhatsApp','+1 (415) 555-0182',true)}
+      ${chanCard('phone','iMessage / SMS','+1 (415) 555-0182',false)}
+      ${chanCard('app','In-app','Always on for important alerts',true)}
+    </div>
+  </div>
+  <div class="card" style="padding:24px;margin-bottom:20px">
+    <div class="eyebrow" style="margin-bottom:4px">Fine-tune by type</div><h3 style="font-size:16px;margin-bottom:4px">Channels per notification type</h3>
+    <p class="muted" style="font-size:12.5px;margin-bottom:16px">These follow your channel selection above by default. Critical pacing alerts, payment updates, and direct messages always stay visible in-app even if external channels are off.</p>
+    <div class="matrix-row head"><span>Notification type</span><span>Email</span><span>WhatsApp</span><span>SMS</span><span>In-app</span><span style="text-align:right">Frequency</span></div>
+    ${matrix}
+  </div>
+  <div class="card" style="padding:24px">
+    <div class="eyebrow" style="margin-bottom:4px">Quiet hours & availability</div><h3 style="font-size:16px;margin-bottom:16px">Pause non-critical notifications</h3>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><div class="tg on" onclick="this.classList.toggle('on')"></div><span style="font-size:13px">Enable daily quiet hours</span></div>
+    <div class="inline-2" style="max-width:420px"><div class="field"><label>Start</label><input class="input" value="10:00 PM"/></div><div class="field"><label>End</label><input class="input" value="8:00 AM"/></div></div>
+    <div class="hairline" style="margin:6px 0 18px"></div>
+    <label class="check" style="max-width:520px;margin-bottom:12px"><input type="checkbox" checked/><span><b>Silence non-critical notifications on weekends</b> (Saturday & Sunday)</span></label>
+    <div class="field" style="max-width:520px"><label>Out-of-office dates <span class="opt">· pause non-critical notifications</span></label><div class="inline-2"><input class="input" placeholder="Start date" value="Jul 1, 2026"/><input class="input" placeholder="End date" value="Jul 7, 2026"/></div></div>
+    <label class="check" style="max-width:520px"><input type="checkbox" checked/><span>Allow <b>critical campaign alerts</b> and urgent Artist Influence messages to bypass quiet hours, weekends, and OOO</span></label>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px"><button class="btn btn-primary btn-sm" onclick="toast('Notification preferences saved')">${svg('check')}Save Preferences</button></div>
+  </div>`;
+}
+
+/* ===================== MODALS ===================== */
+function openModal(html){const m=document.getElementById('modalMount');m.innerHTML=html;labelTables(m);document.getElementById('overlay').classList.add('open');}
+function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))return;document.getElementById('overlay').classList.remove('open');}
+function closeM(){document.getElementById('overlay').classList.remove('open');}
+
+function openOffer(id,adjust){
+  const c=available.find(x=>x.id===id)||directDeals.find(x=>x.id===id);
+  const isDirect=!!directDeals.find(x=>x.id===id);
+  const need=c.need||c.propStreams;
+  openModal(`<div class="modal">
+    <div class="modal-head">${cover(c.cover,c.artist)}<div style="flex:1"><h3>${adjust?'Adjust Allocation':'Submit Offer'}</h3><div class="muted" style="font-size:12.5px">${songLink(c.artist,c.song)} · ${c.artist}</div></div><button class="close-x" onclick="closeM()">${svg('x')}</button></div>
+    <div class="modal-body">
+      <div class="mini-detail">
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px">${tier(c.tier)}<span class="pill gray">${c.genre}</span><span class="pill gray">${c.sub}</span></div>
+        <div class="grid g-2" style="gap:12px">
+          <div class="kv"><span class="k">${isDirect?'Proposed streams':'Remaining to allocate'}</span><span class="v mono">${fmt(need)}</span></div>
+          <div class="kv"><span class="k">Delivery window</span><span class="v">${c.window} days</span></div>
+          <div class="kv"><span class="k">Territory focus</span><span class="v" style="font-size:13px">${c.terr}</span></div>
+          <div class="kv"><span class="k">${isDirect?'Proposed rate':'Min. offer size'}</span><span class="v mono">${isDirect?'$'+c.propRate+'/1k':fmt(c.min)}</span></div>
+          <div class="kv"><span class="k">Release date</span><span class="v" style="font-size:13px">${c.release}</span></div>
+        </div>
+        ${c.note?`<div style="margin-top:12px;font-size:12px;color:hsl(var(--text-secondary))"><span class="muted">Note from Artist Influence:</span> ${c.note}</div>`:''}
+      </div>
+      <div class="inline-2">
+        <div class="field"><label>Streams you can cover</label><input class="input" value="${isDirect?fmt(c.propStreams):''}" placeholder="e.g. 30,000"/></div>
+        <div class="field"><label>Cost per 1,000 streams</label><input class="input" value="${isDirect?'$'+c.propRate+'.00':''}" placeholder="$10.00"/></div>
+      </div>
+      <div class="inline-2"><div class="field"><label>Estimated start date <span class="opt">· optional</span></label><input class="input" placeholder="mm/dd/yyyy"/></div><div class="field"><label>Playlist references <span class="opt">· optional</span></label><input class="input" placeholder="Attach later if you prefer"/></div></div>
+      <div class="field"><label>Notes <span class="opt">· optional</span></label><textarea class="input" rows="2" placeholder="Anything Artist Influence should know"></textarea></div>
+      <label class="check"><input type="checkbox"/><span>I can deliver this within the campaign delivery window.</span></label>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeM()">Cancel</button><button class="btn btn-primary btn-sm" onclick="submitOffer()">${svg('send')}${adjust?'Submit Adjusted Offer':'Submit Offer'}</button></div>
+  </div>`);
+}
+function submitOffer(){closeM();toast('Offer submitted, Artist Influence will review');setTimeout(()=>go('offers'),700);}
+function acceptAllocation(id){toast('Allocation accepted, this is now an active campaign');}
+
+let addMode='url';
+function openAddPlaylist(campaignId){
+  addMode='url';
+  renderAddPlaylist(campaignId);
+}
+function setAddMode(m,campaignId){addMode=m;renderAddPlaylist(campaignId);}
+function renderAddPlaylist(campaignId){
+  const c=campaignId?getActive(campaignId):null;
+  const existing=playlists.map(p=>`<label class="check" style="margin-bottom:8px"><input type="checkbox"/><div style="flex:1"><div style="font-weight:600;font-size:13px">${p.name}</div><div class="muted" style="font-size:11.5px">${p.genre} · ${fmt(p.followers)} followers · ${p.avg>0?fmt(p.avg)+'/day':'pending tracking'}</div></div></label>`).join('');
+  openModal(`<div class="modal wide">
+    <div class="modal-head"><div class="ac-ic blue" style="width:42px;height:42px">${svg('music',2)}</div><div style="flex:1"><h3>Add Playlists</h3><div class="muted" style="font-size:12.5px">${c?'Attach to '+c.artist+' - '+c.song:'Save to your playlists'}</div></div><button class="close-x" onclick="closeM()">${svg('x')}</button></div>
+    <div class="modal-body">
+      <div class="tabs" style="margin-bottom:20px"><span class="tab ${addMode==='existing'?'active':''}" onclick="setAddMode('existing','${campaignId||''}')">${svg('search').replace('<svg','<svg style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:5px"')}From your playlists</span><span class="tab ${addMode==='url'?'active':''}" onclick="setAddMode('url','${campaignId||''}')">${svg('plus').replace('<svg','<svg style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:5px"')}Add new by URL</span></div>
+      ${addMode==='existing'?`
+        <div class="field"><div style="position:relative"><input class="input" placeholder="Search your saved playlists" style="padding-left:36px"/><div style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:hsl(var(--text-tertiary))">${svg('search',2)}</div></div></div>
+        <div style="max-height:280px;overflow-y:auto;margin:0 -2px;padding:0 2px">${existing}</div>
+        <div class="muted" style="font-size:11.5px;margin-top:10px">Pick one or more playlists already registered to your account to attach to this campaign.</div>
+      `:`
+        <div class="field"><label>Spotify playlist URL(s)</label><textarea class="input" rows="4" placeholder="https://open.spotify.com/playlist/...&#10;https://open.spotify.com/playlist/...&#10;Paste one or more, one per line"></textarea><div class="hint">That is all we need. SFA's web API auto-grabs the playlist name, genre, assumed territory (from the songs plus the language of the title and description), follower count, and average daily streams. Duplicates are deduped by Spotify playlist ID.</div></div>
+        <div class="field"><label>Notes <span class="opt">· optional</span></label><textarea class="input" rows="2" placeholder="Any notes for your own reference"></textarea></div>
+      `}
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeM()">Cancel</button><button class="btn btn-primary btn-sm" onclick="closeM();toast('${c?'Playlists attached, delivery can begin':'Playlists saved'}')">${svg('plus')}${c?'Add & Attach':'Save Playlists'}</button></div>
+  </div>`);
+}
+
+function openMessage(campaignId){
+  const c=getActive(campaignId);
+  openModal(`<div class="modal"><div class="modal-head"><div class="ac-ic blue" style="width:42px;height:42px">${svg('msg',2)}</div><div style="flex:1"><h3>Message Artist Influence</h3><div class="muted" style="font-size:12.5px">${c?c.artist+' - '+c.song:''}</div></div><button class="close-x" onclick="closeM()">${svg('x')}</button></div>
+    <div class="modal-body">
+      <div class="field"><label>What's going on?</label><select class="select"><option>I added playlists</option><option>I need more time</option><option>I cannot cover the accepted amount</option><option>I need this campaign reviewed</option><option>Other</option></select></div>
+      <div class="field"><label>Details <span class="opt">· optional</span></label><textarea class="input" rows="3" placeholder="Add any context for the Artist Influence team"></textarea></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeM()">Cancel</button><button class="btn btn-primary btn-sm" onclick="closeM();toast('Message sent to Artist Influence')">${svg('send')}Send</button></div>
+  </div>`);
+}
+
+/* ===================== NOTIFS + TOAST ===================== */
+function toggleNotif(e){
+  e.stopPropagation();
+  const pop=document.getElementById('notifPop');
+  if(!pop.innerHTML){
+    pop.innerHTML=`<div style="padding:14px 16px;border-bottom:1px solid hsl(var(--hairline)/0.4);display:flex;align-items:center;justify-content:space-between"><span style="font-weight:700;font-size:13.5px">Notifications</span><span class="muted" style="font-size:11.5px">Mark all read</span></div>`+
+    notifs.map(n=>`<div class="notif-row" onclick="closeNotif();${n.go}"><div class="nd" style="background:hsl(var(--ai-${n.dot==='green'?'success':n.dot==='red'?'red':'amber'}))"></div><div style="flex:1"><div style="font-weight:600;font-size:12.5px">${n.title}</div><div class="muted" style="font-size:11.5px;margin-top:1px">${n.body}</div><div class="muted" style="font-size:10.5px;margin-top:3px">${n.time}</div></div></div>`).join('')+
+    `<div style="padding:11px 16px;text-align:center;font-size:12px;font-weight:600;color:hsl(var(--ai-red));cursor:pointer" onclick="closeNotif();go('home')">View all in Home</div>`;
+  }
+  pop.classList.toggle('open');
+}
+function closeNotif(){document.getElementById('notifPop').classList.remove('open');document.getElementById('notifPop').innerHTML='';}
+document.addEventListener('click',()=>closeNotif());
+
+let toastT;
+function toast(msg){document.getElementById('toastMsg').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
+
+
+/* === Interactive polish: mouse-tilt cards + scroll reveals (parity with the marketing site) === */
+const _coarse=window.matchMedia('(pointer:coarse)').matches;
+const _reduced=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+function applyTilt(scope){
+  if(_coarse||_reduced)return;
+  (scope||document).querySelectorAll('.card,.action-card').forEach(card=>{
+    if(card._tilt)return; card._tilt=true;
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+      card.classList.add('tilting');
+      card.style.transform=`perspective(900px) rotateX(${(-py*4.5).toFixed(2)}deg) rotateY(${(px*4.5).toFixed(2)}deg) translateY(-2px)`;
+    });
+    card.addEventListener('mouseleave',()=>{card.classList.remove('tilting');card.style.transform='';});
+  });
+}
+let _revObs=null;
+function revealOnScroll(scope){
+  const root=scope||document.getElementById('view'); if(!root)return;
+  if(_reduced)return;
+  if(!_revObs){
+    _revObs=new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('revealed'); _revObs.unobserve(en.target); } });
+    },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  }
+  const kids=[...root.children].filter(el=>el.nodeType===1);
+  kids.forEach((el,i)=>{ el.classList.add('reveal'); el.style.setProperty('--rd', Math.min(i,8)*60+'ms'); _revObs.observe(el); });
+}
+function enhanceView(){ const v=document.getElementById('view'); if(!v)return; applyTilt(v); revealOnScroll(v); }
+(function(){ const vm=document.getElementById('view'); if(vm){ new MutationObserver(()=>enhanceView()).observe(vm,{childList:true}); } })();
+
+/* cursor dot — desktop fine-pointer only, disabled under reduced-motion via CSS */
+(function(){
+  if(window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    const dot=document.createElement('div');dot.className='cursor-dot';document.body.appendChild(dot);
+    window.addEventListener('mousemove',e=>{dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px';dot.style.opacity='1';});
+    window.addEventListener('mouseout',()=>{dot.style.opacity='0';});
+  }
+})();
+/* re-render when crossing the mobile breakpoint so the view mode follows */
+let wasMobile=isMobile();
+window.addEventListener('resize',()=>{const m=isMobile();if(m!==wasMobile){wasMobile=m;render();}});
+
+render();
+</script>
+</body>
+</html>
