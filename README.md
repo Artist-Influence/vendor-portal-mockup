@@ -5,7 +5,17 @@ design system: dark glass-morphism on drifting oxblood light, one electric red
 (#ED1C24) accent, Helvetica Neue / Inter / JetBrains Mono type, plus the full
 interactive layer (card mouse-tilt, cursor dot, scroll reveals, ambient glow).
 
-Built as visual reference / inspiration. Sample data only — no backend.
+**Purpose:** this repo is the UI/UX reference for a new vendor-facing flow to be implemented
+on top of an existing platform that already has the auth, routes, and backend to actualize the
+intended functionality. The mockup is the design + interaction spec; the platform supplies the
+data and behavior.
+
+Sample data only — no backend, no auth, no network calls.
+
+> **Implementing this?** Start with [`IMPLEMENTATION.md`](IMPLEMENTATION.md) — it maps every
+> screen to a route, every data array to a contract, and every action to the backend endpoint it
+> needs (including the Spotify-for-Artists ingestion and Friday payout batching that aren't
+> obvious from the screens alone).
 
 ## Run it
 The whole thing is `index.html`. Three options:
